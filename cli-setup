@@ -2,6 +2,9 @@
 
 set -e
 set -u
+set -x
+
+printf "travis_fold:start:cli-setup\n"
 
 TARGET=${TARGET:-..}
 
@@ -13,3 +16,5 @@ rst-lint README.rst
 
 python setup.py sdist
 pip install dist/*.tar.gz
+
+printf "travis_fold:end:cli-setup\n"
