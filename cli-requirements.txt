@@ -1,0 +1,4 @@
+flake8
+pep8-naming
+pycodestyle
+restructuredtext_lint

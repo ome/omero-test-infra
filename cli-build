@@ -1,0 +1,8 @@
+#! /bin/bash
+
+set -e
+set -u
+set -x
+
+python setup.py sdist
+pip install dist/*.tar.gz

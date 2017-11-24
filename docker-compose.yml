@@ -1,0 +1,16 @@
+db:
+  image: postgres
+  environment:
+    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+omero:
+  image: ${OMERO_IMAGE_REPO}/${OMERO_IMAGE_NAME}:${OMERO_IMAGE_TAG}
+  environment:
+    - CONFIG_omero_db_user=postgres
+    - CONFIG_omero_db_name=postgres
+    - CONFIG_omero_db_pass=${POSTGRES_PASSWORD}
+    - ROOTPASS=omero
+  links:
+    - db:db
+  ports:
+    - "${OMERO_TCP_PORT}:4063"
+    - "${OMERO_SSL_PORT}:4064"
