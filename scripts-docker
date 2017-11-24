@@ -15,4 +15,5 @@ docker cp -L .      $CID:/$TARGET
 docker cp -L .omero $CID:/test-omero
 docker exec -u root         $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
 #docker exec -u root         $CID yum install -y mencoder
+docker exec $CID /test-omero/wait-on-login
 docker exec -u omero-server -e TARGET=$TARGET $CID /tools-omero/scripts-build

@@ -13,5 +13,7 @@ TARGET=/$(basename $PWD)
 docker cp -L .      $CID:/$TARGET
 docker cp -L .omero $CID:/test-omero
 docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
+
+docker exec $CID /test-omero/wait-on-login
 docker exec -u root -e TARGET=$TARGET $CID /test-omero/cli-setup
 docker exec         -e TARGET=$TARGET $CID /test-omero/cli-build
