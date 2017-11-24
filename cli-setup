@@ -2,9 +2,14 @@
 
 set -e
 set -u
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-cd $dir
 
+TARGET=${TARGET:-..}
+
+dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+cd $TARGET
 pip install --upgrade pip setuptools
-pip install -r cli-requirements.txt
+pip install -r $dir/cli-requirements.txt
 rst-lint README.rst
+
+python setup.py sdist
+pip install dist/*.tar.gz
