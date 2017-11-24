@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# assumes:
+# git clone --recurse-submodules git://github.com/openmicroscopy/test-omero .omero
+
+set -e
+set -u
+set -x
+
+# TODO: Refactor this into a common docker-setup
+PROJECT=${PROJECT:-omero}
+CID=${CID:-"$PROJECT"_omero_1}
+TARGET=/$(basename $PWD)
+.omero/compose up -d --force-recreate
+docker cp -L .      $CID:/$TARGET
+docker cp -L .omero $CID:/test-omero
+docker exec -u root $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
+
+# Build the library that should be run on the client-side
+docker build -t test .
+
+# Check that we can login to the server
+docker exec $CID /test-omero/wait-on-login
+
+# Run custom server setup
+if [ -e .omeroci/test-data ];
+then
+  printf "travis_fold:start:test-data\n"
+  docker exec -ti $CID /$TARGET/.omeroci/test-data
+  printf "travis_fold:end:test-data\n"
+fi
+
+# Run the tests in the library docker
+docker run --link $CID:omero --rm test

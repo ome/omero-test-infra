@@ -1,6 +1,8 @@
 #!/bin/bash
 
+PROJECT=${PROJECT:-omero}
+
 dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 cd $dir
 
-exec docker-compose "$@"
+exec docker-compose -p $PROJECT "$@"

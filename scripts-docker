@@ -5,6 +5,7 @@
 
 set -e
 set -u
+set -x
 
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_omero_1}
@@ -12,6 +13,6 @@ TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
 docker cp -L .omero $CID:/test-omero
-docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
-docker exec -u root -e TARGET=$TARGET $CID /test-omero/cli-setup
-docker exec         -e TARGET=$TARGET $CID /test-omero/cli-build
+docker exec -u root         $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
+#docker exec -u root         $CID yum install -y mencoder
+docker exec -u omero-server -e TARGET=$TARGET $CID /tools-omero/scripts-build
