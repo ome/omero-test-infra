@@ -4,5 +4,15 @@ set -e
 set -u
 set -x
 
+PLUGIN=${PLUGIN:-unknown}
+CID=${CID:-testomero_omero_1}
+
 python setup.py sdist
-pip install dist/*.tar.gz
+FILE=$(basename dist/*.tar.gz)
+docker cp dist/$FILE $CID:/tmp
+docker exec -u root $CID pip install /tmp/$FILE
+docker exec $CID /opt/omero/server/OMERO.server/bin/omero $PLUGIN -h
+
+VALUE=$(readlink -f OMERO.server)
+export PYTHONPATH=$VALUE/lib/python
+python setup.py test -t test/integration/clitest -i $VALUE/etc/ice.config -v
