@@ -6,7 +6,7 @@
 set -e
 set -u
 
-CID=${CID:-testomero_omero_1}
+CID=${CID:-omero_omero_1}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
