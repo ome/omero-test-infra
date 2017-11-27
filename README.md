@@ -30,4 +30,4 @@ cli-docker
 ==========
 
 This runs a full suite, starting up an OMERO.server via
-docker-compose followed by running both cli-setup and cli-docker.
+docker-compose followed by running both py-setup and cli-docker.
