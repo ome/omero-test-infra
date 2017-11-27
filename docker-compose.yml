@@ -1,19 +1,24 @@
-db:
-  image: postgres
-  environment:
-    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-omero:
-  image: ${OMERO_IMAGE_REPO}/${OMERO_IMAGE_NAME}:${OMERO_IMAGE_TAG}
-  environment:
-    - TBD_SKIP_UPGRADE_CHECK=true
-    - CONFIG_omero_db_user=postgres
-    - CONFIG_omero_db_name=postgres
-    - CONFIG_omero_db_pass=${POSTGRES_PASSWORD}
-    - ROOTPASS=omero
-  links:
-    - db:db
-  ports:
-    - "${OMERO_TCP_PORT}:4063"
-    - "${OMERO_SSL_PORT}:4064"
-# TBD: add web
+version: '3'
+
+services:
+  db:
+    image: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  omero:
+    image: ${OMERO_SERVER_IMAGE}:${OMERO_SERVER_VERSION}
+    environment:
+      - ROOTPASS=${ROOTPASS}
+      - CONFIG_omero_db_user=postgres
+      - CONFIG_omero_db_name=postgres
+      - CONFIG_omero_db_pass=${POSTGRES_PASSWORD}
+      - CONFIG_omero_upgrades_url=
+    ports:
+      - "${OMERO_SERVER_TCP}:4063"
+      - "${OMERO_SERVER_SSL}:4064"
+  web:
+    image: ${OMERO_WEB_IMAGE}:${OMERO_WEB_VERSION}
+    ports:
+      - "${OMERO_WEB_PORT}:4080"
+
 # TBD: add client

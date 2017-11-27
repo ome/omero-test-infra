@@ -10,6 +10,7 @@ set -x
 # TODO: Refactor this into a common docker-setup
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_omero_1}
+NETWORK=${NETWORK:-"$PROJECT"_default}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
@@ -31,4 +32,4 @@ then
 fi
 
 # Run the tests in the library docker
-docker run --link $CID:omero --rm test
+docker run --link $CID:omero --net $NETWORK --rm test
