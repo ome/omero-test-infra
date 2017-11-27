@@ -18,6 +18,6 @@ rst-lint README.rst
 python setup.py sdist
 pip install dist/*.tar.gz
 python setup.py clean
-rm -rf dist src/*egg-info
+rm -rf dist *egg-info src/*egg-info
 
 printf "travis_fold:end:py-setup\n"

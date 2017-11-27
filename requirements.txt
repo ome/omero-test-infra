@@ -5,3 +5,6 @@ restructuredtext_lint
 pytest
 restview
 mox
+# TODO: Apps only
+pytest-runner
+pytest-django

@@ -1,6 +1,11 @@
 #!/bin/bash
 
 OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
+if [ ! -e $OMERO_DIST ];
+then
+    OMERO_DIST=/opt/omero/web/OMERO.web
+fi
+
 OMERO_HOST=${OMERO_HOST:-localhost}
 OMERO_PORT=${OMERO_PORT:-4064}
 OMERO_USER=${OMERO_USER:-root}
