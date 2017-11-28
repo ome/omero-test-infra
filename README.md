@@ -1,33 +1,50 @@
-Any repository that relies on an existing OMERO server
-for testing can add this directory as a submodule, both
-for testing in travis as well as locally.
+Test OMERO
+==========
+
+`test-omero` provides simplified integration testing
+for projects that are built on OMERO.server or OMERO.web.
+
+Any repository that relies on an existing OMERO installation
+can depend on this directory whether for testing in travis
+or locally.
 
 Setup
 -----
 
- * git clone git://github.com/openmicroscopy/test-omero .omero
+The directory MUST BE located at .omero at the top-level of
+your source code. This can be achieved most simply by:
 
+```
+git clone git://github.com/openmicroscopy/test-omero .omero
+```
 
-CLI Usage
----------
+but adding the repository as a submodule or downloading a
+zip file are also permissible.
 
-For CLI plugins, the following commands are available:
+Basic usage
+-----------
 
-cli-setup
-========
+`.omero/compose up` will start an basic OMERO stack including
+PostgreSQL, OMERO.server, and OMERO.web using the current
+production docker images. The definition of the stack is available
+in `docker-compose.yml` with a number of environment variables
+being specified in `.env`.
 
-Install necessary requirements followed by building and
-installing the current CLI plugin into the current environment.
+Docker commands
+---------------
 
-cli-build
-=========
+Each of the `*-docker` commands runs a full build in the given style:
 
-Test that the plugin has been properly installed and run
-and available integration tests.
+ * `app-docker` for testing OMERO.web applications
+ * `cli-docker` for testing `omero-cli-*` projects
+ * `lib-docker` for testing client-side libraries
 
+These scripts are invoked directly by the `script` step in project .travis.yml
+files.
 
-cli-docker
-==========
+Other commands
+--------------
 
-This runs a full suite, starting up an OMERO.server via
-docker-compose followed by running both py-setup and cli-docker.
+ * `py-setup` runs standard Python package build steps
+ * `wait-on-login` periodically attempts to login to OMERO.server
+
