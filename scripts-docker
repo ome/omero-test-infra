@@ -14,6 +14,9 @@ TARGET=/$(basename $PWD)
 docker cp -L .      $CID:/$TARGET
 docker cp -L .omero $CID:/infra
 docker exec -u root         $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
+
 #docker exec -u root         $CID yum install -y mencoder
+docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
+
 docker exec $CID /infra/wait-on-login
 docker exec -u omero-server -e TARGET=$TARGET $CID /infra/scripts-build
