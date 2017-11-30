@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # assumes:
-# git clone --recurse-submodules git://github.com/openmicroscopy/test-omero .omero
+# git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
 set -e
 set -u
@@ -14,14 +14,14 @@ NETWORK=${NETWORK:-"$PROJECT"_default}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
-docker cp -L .omero $CID:/test-omero
-docker exec -u root $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
+docker cp -L .omero $CID:/infra
+docker exec -u root $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
 
 # Build the library that should be run on the client-side
 docker build -t test .
 
 # Check that we can login to the server
-docker exec $CID /test-omero/wait-on-login
+docker exec $CID /infra/wait-on-login
 
 # Run custom server setup
 if [ -e .omeroci/test-data ];

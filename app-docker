@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # assumes:
-# git clone --recurse-submodules git://github.com/openmicroscopy/test-omero .omero
+# git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
 set -e
 set -u
@@ -11,8 +11,8 @@ CID=${CID:-"$PROJECT"_web_1}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
-docker cp -L .omero $CID:/test-omero
-docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-web:omero-web $TARGET /test-omero"
+docker cp -L .omero $CID:/infra
+docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-web:omero-web $TARGET /infra"
 
 # Workarounds
 # https://github.com/openmicroscopy/omero-web-docker/pull/17
@@ -21,8 +21,8 @@ docker exec $CID sed -i "s/^\(omero\.host\s*=\s*\).*\$/\1omero/" /opt/omero/web/
 docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/omego/bin/omego download java --sym /opt/omero/java
 docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
 
-docker exec -e OMERO_HOST=omero $CID /test-omero/wait-on-login
-docker exec -u root -e TARGET=$TARGET $CID /test-omero/py-setup
+docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
+docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 
 # Run custom server setup
 if [ -e .omeroci/app-config ];
@@ -30,4 +30,4 @@ then
   docker exec $CID bash /$TARGET/.omeroci/app-config
 fi
 
-docker exec         -e TARGET=$TARGET $CID /test-omero/app-build
+docker exec         -e TARGET=$TARGET $CID /infra/app-build

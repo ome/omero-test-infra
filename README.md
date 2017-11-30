@@ -1,7 +1,7 @@
-Test OMERO
-==========
+OMERO Test Infra
+================
 
-`test-omero` provides simplified integration testing
+`omero-test-infra` provides simplified integration testing
 for projects that are built on OMERO.server or OMERO.web.
 
 Any repository that relies on an existing OMERO installation
@@ -15,7 +15,7 @@ The directory MUST BE located at .omero at the top-level of
 your source code. This can be achieved most simply by:
 
 ```
-git clone git://github.com/openmicroscopy/test-omero .omero
+git clone git://github.com/openmicroscopy/omero-test-infra .omero
 ```
 
 but adding the repository as a submodule or downloading a

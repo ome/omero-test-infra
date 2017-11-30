@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # assumes:
-# git clone --recurse-submodules git://github.com/openmicroscopy/test-omero .omero
+# git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
 set -e
 set -u
@@ -11,9 +11,9 @@ CID=${CID:-"$PROJECT"_omero_1}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
-docker cp -L .omero $CID:/test-omero
-docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-server:omero-server $TARGET /test-omero"
+docker cp -L .omero $CID:/infra
+docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
 
-docker exec $CID /test-omero/wait-on-login
-docker exec -u root -e TARGET=$TARGET $CID /test-omero/py-setup
-docker exec         -e TARGET=$TARGET $CID /test-omero/cli-build
+docker exec $CID /infra/wait-on-login
+docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
+docker exec         -e TARGET=$TARGET $CID /infra/cli-build
