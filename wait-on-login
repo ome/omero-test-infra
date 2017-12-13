@@ -28,6 +28,8 @@ tail /opt/omero/server/OMERO.server/var/log/Blitz-0.log
 tail /opt/omero/server/OMERO.server/var/log/master.err
 tail /opt/omero/server/OMERO.server/var/log/master.out
 echo "Try login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS"
+echo "but first sleeping a while..."
+sleep 30
 until omero login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS 2>&1 >/dev/null
 do
     if (( attempt_num == max_attempts ))
