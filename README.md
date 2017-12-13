@@ -48,3 +48,8 @@ Other commands
  * `py-setup` runs standard Python package build steps
  * `wait-on-login` periodically attempts to login to OMERO.server
 
+ Environment variables
+ ---------------------
+
+ * `DOCKER_ARGS` will be passed to `docker run ... test` to allow
+   mounting additional directories or exposing ports.

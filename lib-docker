@@ -3,6 +3,8 @@
 # assumes:
 # git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
+export DOCKER_ARGS=${DOCKER_ARGS:-""}
+
 set -e
 set -u
 set -x
@@ -32,4 +34,4 @@ then
 fi
 
 # Run the tests in the library docker
-docker run --link $CID:omero --net $NETWORK --rm test
+docker run --link $CID:omero --net $NETWORK --rm $DOCKER_ARGS test
