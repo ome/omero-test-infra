@@ -24,6 +24,7 @@ function end {
 trap end EXIT
 
 printf "travis_fold:start:wait-on-login\n"
+echo "Try login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS"
 until omero login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS 2>&1 >/dev/null
 do
     if (( attempt_num == max_attempts ))
