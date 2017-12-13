@@ -15,7 +15,6 @@ export PATH=$PATH:${OMERO_DIST}/bin
 
 
 max_attempts=10
-attempt_num=1
 
 function end {
     printf "travis_fold:end:wait-on-login\n"
@@ -24,12 +23,25 @@ function end {
 trap end EXIT
 
 printf "travis_fold:start:wait-on-login\n"
-tail /opt/omero/server/OMERO.server/var/log/Blitz-0.log
-tail /opt/omero/server/OMERO.server/var/log/master.err
-tail /opt/omero/server/OMERO.server/var/log/master.out
-echo "Try login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS"
-echo "but first sleeping a while..."
-sleep 30
+
+
+# First: wait until the OMERO port is listening
+attempt_num=1
+until python -c "import socket; assert socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex(('$OMERO_HOST', $OMERO_PORT)) == 0"
+do
+    if (( attempt_num == max_attempts ))
+    then
+        echo "No ports open"
+        exit 1
+    fi
+
+    echo "Port attempt $(( attempt_num++ )) failed. Trying again in $attempt_num seconds..."
+    sleep $attempt_num
+
+done
+
+# Second: try to login
+attempt_num=1
 until omero login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS 2>&1 >/dev/null
 do
     if (( attempt_num == max_attempts ))
@@ -38,7 +50,7 @@ do
         exit 1
     fi
 
-    echo "Attempt $(( attempt_num++ )) failed. Trying again in $attempt_num seconds..."
+    echo "Login attempt $(( attempt_num++ )) failed. Trying again in $attempt_num seconds..."
     sleep $attempt_num
 
 done
