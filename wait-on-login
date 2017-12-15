@@ -10,6 +10,7 @@ OMERO_HOST=${OMERO_HOST:-localhost}
 OMERO_PORT=${OMERO_PORT:-4064}
 OMERO_USER=${OMERO_USER:-root}
 OMERO_PASS=${OMERO_PASS:-omero}
+SLEEP_TIME=${SLEEP_TIME:-30}
 
 export PATH=$PATH:${OMERO_DIST}/bin
 
@@ -39,6 +40,10 @@ do
     sleep $attempt_num
 
 done
+
+# HACK: This 'ready' detection is still not working. Adding a hard sleep to be safe.
+echo Sleeping for ${SLEEP_TIME}
+sleep ${SLEEP_TIME}
 
 # Second: try to login
 attempt_num=1
