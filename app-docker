@@ -24,6 +24,12 @@ docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
 docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
 docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 
+# Run custom dependencies setup
+if [ -e .omeroci/app-deps ];
+then
+  docker exec $CID bash /$TARGET/.omeroci/app-deps
+fi
+
 # Run custom server setup
 if [ -e .omeroci/app-config ];
 then
