@@ -15,15 +15,14 @@ pip install --upgrade pip setuptools
 pip install -r $dir/requirements.txt
 array=( $EXCLUDE )
 size="${#array[@]}"
+v=""
 if (( $size != 0 )); then 
     v="--exclude "
     for i in "${array[@]}"; do
       v=$v" "$i
     done
-    flake8 $v -v .
-else
-    flake8 -v .
 fi
+flake8 $v -v .
 rst-lint README.rst
 
 cd $DIR
