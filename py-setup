@@ -8,7 +8,7 @@ printf "travis_fold:start:py-setup\n"
 
 TARGET=${TARGET:-..}
 EXCLUDE=${EXCLUDE:-}
-
+DIR=${DIR:-.}
 dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 cd $TARGET
 pip install --upgrade pip setuptools
@@ -26,6 +26,7 @@ else
 fi
 rst-lint README.rst
 
+cd $DIR
 python setup.py sdist
 pip install dist/*.tar.gz
 python setup.py clean
