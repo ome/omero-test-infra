@@ -39,4 +39,4 @@ then
   docker exec $CID bash /$TARGET/.omeroci/app-config
 fi
 
-docker exec         -e TARGET=$TARGET $CID /infra/app-build
+docker exec         -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build
