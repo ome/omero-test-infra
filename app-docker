@@ -6,6 +6,7 @@
 set -e
 set -u
 
+EXCLUDE=${EXCLUDE:-}
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_web_1}
 TARGET=/$(basename $PWD)
@@ -28,7 +29,7 @@ then
 fi
 
 docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
-docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
+docker exec -u root -e TARGET=$TARGET -e EXCLUDE=$EXCLUDE $CID /infra/py-setup
 
 
 # Run custom server setup
