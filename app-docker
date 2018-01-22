@@ -22,9 +22,9 @@ docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/omego/bin/omego downloa
 docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
 
 # Run custom dependencies setup
-if [ -e .omeroci/app-deps ];
+if [ -e .omeroci/app-build-deps ];
 then
-  docker exec -u root $CID bash /$TARGET/.omeroci/app-deps
+  docker exec -u root $CID bash /$TARGET/.omeroci/app-build-deps
 fi
 
 docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
