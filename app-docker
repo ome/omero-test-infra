@@ -24,7 +24,7 @@ docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
 # Run custom dependencies setup
 if [ -e .omeroci/app-deps ];
 then
-  docker exec $CID bash /$TARGET/.omeroci/app-deps
+  docker exec -u root $CID bash /$TARGET/.omeroci/app-deps
 fi
 
 docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
