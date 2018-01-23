@@ -15,6 +15,12 @@ docker cp -L .      $CID:/$TARGET
 docker cp -L .omero $CID:/infra
 docker exec -u root         $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
 
+# Run custom dependencies setup
+if [ -e .omeroci/app-build-deps ];
+then
+  docker exec -u root $CID bash /$TARGET/.omeroci/app-build-deps
+fi
+
 #docker exec -u root         $CID yum install -y mencoder
 docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 
