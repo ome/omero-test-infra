@@ -21,6 +21,15 @@ if [ -e .omeroci/app-deps ]; then
   docker exec -u root $CID bash /$TARGET/.omeroci/app-deps
 fi
 
+# install setuptools and requirement
+docker exec -u root -e TARGET=$TARGET $CID /infra/py-common
+
+if [ -e .omeroci/app-check ]; then
+  docker exec -u root $CID bash /$TARGET/.omeroci/app-check
+else 
+  docker exec -u root -e TARGET=$TARGET $CID /infra/py-check
+fi
+
 #docker exec -u root         $CID yum install -y mencoder
 docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 
