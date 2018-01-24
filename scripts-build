@@ -14,7 +14,7 @@ rm -rf $OMERO_DIST/lib/scripts/omero
 
 cd $TARGET
 cp -r $DIR_SCRIPTS $OMERO_DIST/lib/scripts/
-ls $OMERO_DIST/lib/scripts/omero/figure_scripts
+
 python setup.py test -t test/integration -i ${OMERO_DIST}/etc/ice.config -v
 
 printf "travis_fold:end:scripts-build\n"
