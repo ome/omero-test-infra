@@ -5,7 +5,7 @@ set -u
 set -x
 
 printf "travis_fold:start:scripts-build\n"
-
+DIR_SCRIPTS=${DIR_SCRIPTS=:-omero}
 export TARGET=${TARGET:-..}
 export OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server/}
 export PYTHONPATH=${OMERO_DIST}/lib/python
@@ -13,7 +13,8 @@ export PYTHONPATH=${OMERO_DIST}/lib/python
 rm -rf $OMERO_DIST/lib/scripts/omero
 
 cd $TARGET
-cp -r omero $OMERO_DIST/lib/scripts/
+cp -r $DIR_SCRIPTS $OMERO_DIST/lib/scripts/
+ls $OMERO_DIST/lib/scripts/omero/figure_scripts
 python setup.py test -t test/integration -i ${OMERO_DIST}/etc/ice.config -v
 
 printf "travis_fold:end:scripts-build\n"
