@@ -6,7 +6,6 @@
 set -e
 set -u
 
-EXCLUDE=${EXCLUDE:-}
 DIR=${DIR:-.}
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_web_1}
@@ -24,18 +23,23 @@ docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/omego/bin/omego downloa
 docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
 
 # Run custom dependencies setup
-if [ -e .omeroci/app-deps ];
-then
+if [ -e .omeroci/app-deps ]; then
   docker exec -u root $CID bash /$TARGET/.omeroci/app-deps
 fi
 
 docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
-docker exec -u root -e TARGET=$TARGET -e EXCLUDE=$EXCLUDE -e DIR=$DIR $CID /infra/py-setup
+# install setuptools and requirement
+docker exec -u root -e TARGET=$TARGET $CID /infra/py-common
+if [ -e .omeroci/app-check ]; then
+  docker exec -u root $CID bash /$TARGET/.omeroci/app-check
+else 
+  docker exec -u root -e TARGET=$TARGET $CID /infra/py-check
+fi
 
+docker exec -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/py-setup
 
 # Run custom server setup
-if [ -e .omeroci/app-config ];
-then
+if [ -e .omeroci/app-config ]; then
   docker exec $CID bash /$TARGET/.omeroci/app-config
 fi
 

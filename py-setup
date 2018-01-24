@@ -7,24 +7,9 @@ set -x
 printf "travis_fold:start:py-setup\n"
 
 TARGET=${TARGET:-..}
-EXCLUDE=${EXCLUDE:-}
 DIR=${DIR:-.}
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-cd $TARGET
-pip install --upgrade pip setuptools
-pip install -r $dir/requirements.txt
-array=( $EXCLUDE )
-size="${#array[@]}"
-v=""
-if (( $size != 0 )); then 
-    v="--exclude "
-    for i in "${array[@]}"; do
-      v=$v" "$i
-    done
-fi
-flake8 $v -v .
-rst-lint README.rst
 
+cd $TARGET
 cd $DIR
 python setup.py sdist
 pip install dist/*.tar.gz

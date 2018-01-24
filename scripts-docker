@@ -17,8 +17,7 @@ docker cp -L .omero $CID:/infra
 docker exec -u root         $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
 
 # Run custom dependencies setup
-if [ -e .omeroci/app-deps ];
-then
+if [ -e .omeroci/app-deps ]; then
   docker exec -u root $CID bash /$TARGET/.omeroci/app-deps
 fi
 
