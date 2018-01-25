@@ -14,6 +14,7 @@ services:
       - CONFIG_omero_db_pass=${POSTGRES_PASSWORD}
       - CONFIG_omero_upgrades_url=
       - CONFIG_Ice_IPv6=0
+      - PYTHONPATH=/opt/omero/server/OMERO.server/lib/python
     ports:
       - "${OMERO_SERVER_TCP}:4063"
       - "${OMERO_SERVER_SSL}:4064"
@@ -22,6 +23,7 @@ services:
     environment:
       - CONFIG_omero_upgrades_url=
       - CONFIG_Ice_IPv6=0
+      - PYTHONPATH=/opt/omero/web/OMERO.web/lib/python
     ports:
       - "${OMERO_WEB_PORT}:4080"
 
