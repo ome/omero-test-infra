@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+set -u
+set -x
+
+printf "travis_fold:start:scripts-copy\n"
+DIR_SCRIPTS=${DIR_SCRIPTS=:-omero}
+export TARGET=${TARGET:-..}
+export OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server/}
+
+rm -rf $OMERO_DIST/lib/scripts/omero
+
+cd $TARGET
+cp -r $DIR_SCRIPTS $OMERO_DIST/lib/scripts/
+
+printf "travis_fold:end:scripts-copy\n"

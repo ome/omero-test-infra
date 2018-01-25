@@ -32,6 +32,8 @@ fi
 
 #docker exec -u root         $CID yum install -y mencoder
 docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
+# copy the scripts
+docker exec -u omero-server -e TARGET=$TARGET -e DIR_SCRIPTS=$DIR_SCRIPTS $CID /infra/scripts-copy
 
 docker exec $CID /infra/wait-on-login
-docker exec -u omero-server -e TARGET=$TARGET -e DIR_SCRIPTS=$DIR_SCRIPTS $CID /infra/scripts-build
+docker exec -u omero-server -e TARGET=$TARGET -e $CID /infra/scripts-build
