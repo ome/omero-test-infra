@@ -36,4 +36,12 @@ docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 docker exec -u omero-server -e TARGET=$TARGET -e DIR_SCRIPTS=$DIR_SCRIPTS $CID /infra/scripts-copy
 
 docker exec $CID /infra/wait-on-login
+
+# Run custom server setup
+if [ -e .omeroci/test-data ]; then
+  printf "travis_fold:start:test-data\n"
+  docker exec -ti $CID /$TARGET/.omeroci/test-data
+  printf "travis_fold:end:test-data\n"
+fi
+
 docker exec -u omero-server -e TARGET=$TARGET $CID /infra/scripts-build
