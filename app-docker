@@ -15,6 +15,7 @@ docker cp -L .      $CID:/$TARGET
 docker cp -L .omero $CID:/infra
 docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R omero-web:omero-web $TARGET /infra"
 
+
 # Workarounds
 # https://github.com/openmicroscopy/omero-web-docker/pull/17
 docker exec $CID sed -i "s/^\(omero\.host\s*=\s*\).*\$/\1omero/" /opt/omero/web/OMERO.web/etc/ice.config
@@ -41,6 +42,8 @@ docker exec -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/py-setup
 # Run custom server setup
 if [ -e .omeroci/app-config ]; then
   docker exec $CID bash /$TARGET/.omeroci/app-config
+else
+  docker exec $CID sh -c "omero config append omero.web.apps \'\"$(echo $(basename $PWD) | tr - _)\"\'"
 fi
 
 docker exec  -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build
