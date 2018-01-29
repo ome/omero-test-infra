@@ -19,12 +19,12 @@ git clone git://github.com/openmicroscopy/omero-test-infra .omero
 ```
 
 but adding the repository as a submodule or downloading a
-zip file are also permissible.
+zip file is also permissible.
 
 Basic usage
 -----------
 
-`.omero/compose up` will start an basic OMERO stack including
+`.omero/compose up` will start a basic OMERO stack including
 PostgreSQL, OMERO.server, and OMERO.web using the current
 production docker images. The definition of the stack is available
 in `docker-compose.yml` with a number of environment variables

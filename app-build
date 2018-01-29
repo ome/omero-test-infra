@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 set -e
 set -u
@@ -13,7 +13,7 @@ cd $TARGET
 GUESS=${PWD#*omero-*}
 PLUGIN=${PLUGIN:-$GUESS}
 
-export OMERO_DIST=${OMERO_DIST:-/opt/omero/web/OMERO.web/}
+export OMERO_DIST=${OMERO_DIST:-/opt/omero/web/OMERO.web}
 export PYTHONPATH=${OMERO_DIST}/lib/python:${OMERO_DIST}/lib/python/omeroweb
 # TBD: unify on test or tests
 # TBD: needs setup.py infra
