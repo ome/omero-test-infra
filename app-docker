@@ -43,7 +43,8 @@ docker exec -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/py-setup
 if [ -e .omeroci/app-config ]; then
   docker exec $CID bash /$TARGET/.omeroci/app-config
 else
-  docker exec $CID sh -c "omero config append omero.web.apps \'\"$(echo $(basename $PWD) | tr - _)\"\'"
+  NAME=$(echo $(basename $PWD) | tr - _)
+  docker exec -e NAME=$NAME $CID /infra/app-config
 fi
 
 docker exec  -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build
