@@ -9,6 +9,7 @@ set -u
 DIR=${DIR:-.}
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_web_1}
+APP_BUILD=${APP_BUILD:-true}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
@@ -47,4 +48,6 @@ else
   docker exec -e NAME=$NAME $CID /infra/app-config
 fi
 
-docker exec  -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build
+if [ $APP_BUILD = true ]; then
+  docker exec  -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build
+fi

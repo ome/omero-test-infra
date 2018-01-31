@@ -9,7 +9,8 @@ set -x
 
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_omero_1}
-DIR_SCRIPTS=${DIR_SCRIPTS=:-omero}
+DIR_SCRIPTS=${DIR_SCRIPTS:-omero}
+SET_UP=${SET_UP:-true}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
@@ -24,14 +25,16 @@ fi
 # install setuptools and requirement
 docker exec -u root -e TARGET=$TARGET $CID /infra/py-common
 
-if [ -e .omeroci/app-check ]; then
-  docker exec -u root $CID bash /$TARGET/.omeroci/app-check
+if [ -e .omeroci/scripts-check ]; then
+  docker exec -u root $CID bash /$TARGET/.omeroci/scripts-check
 else 
   docker exec -u root -e TARGET=$TARGET $CID /infra/py-check
 fi
 
 #docker exec -u root         $CID yum install -y mencoder
-docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
+if [ $SET_UP = true ]; then
+  docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
+fi
 # copy the scripts
 docker exec -u omero-server -e TARGET=$TARGET -e DIR_SCRIPTS=$DIR_SCRIPTS $CID /infra/scripts-copy
 
