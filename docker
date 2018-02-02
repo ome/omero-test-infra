@@ -59,8 +59,12 @@ run() {
     #  2) run the default script in this directory of the same name.
 
     LOCAL=false
+    CALLAS="-u root"
     if [ $1 == "--local" ]; then
         LOCAL=true
+        shift
+    elif [ $1 == "--user" ]; then
+        CALLAS="-u $USER"
         shift
     fi
 
@@ -95,7 +99,7 @@ run() {
         if [ "$LOCAL" == true ]; then
             $ACTION $LOCALPREFIX/$ARGUMENT
         else
-            $ACTION docker exec -u root -e TARGET=$TARGET $CID $PREFIX/$ARGUMENT
+            $ACTION docker exec $CALLAS -e TARGET=$TARGET $CID $PREFIX/$ARGUMENT
         fi
         fold end $file
     fi
@@ -165,8 +169,8 @@ for STAGE in $STAGES; do
             install
             run --local lib build
             wait_on_login
-            run test data
-            run lib test
+            run --user test data
+            run --local lib test
             ;;
         scripts)
             export COMPONENT=server
@@ -179,7 +183,7 @@ for STAGE in $STAGES; do
             run py setup
             run scripts copy
             wait_on_login
-            run test data || echo ignore
+            run --user test data || echo ignore
             run scripts build
             ;;
         *)
