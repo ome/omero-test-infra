@@ -151,7 +151,7 @@ for STAGE in $STAGES; do
             run py check
             run py setup
             app_config
-            run app build
+            run app build || echo ignore
             ;;
         cli)
             export COMPONENT=server
