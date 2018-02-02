@@ -145,7 +145,7 @@ for STAGE in $STAGES; do
             export CID="$PROJECT"_web_1
             install
             java
-            run app deps
+            run app deps || echo ignore
             wait_on_login
             run py common
             run py check
@@ -179,7 +179,7 @@ for STAGE in $STAGES; do
             install
             run script deps || echo ignore
             run py common
-            run py checks || echo ignore
+            run py check
             run py setup
             run scripts copy
             wait_on_login
