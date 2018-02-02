@@ -1,0 +1,15 @@
+#!/bin/bash
+
+setup_dir() {
+    # check the location of setup.py
+    ref_file="setup.py"
+    directory="./"
+    values=()
+    if [ ! -f $ref_file ]; then
+        values=$(find "$(pwd -P)" -name $ref_file)
+        if [ ${#values[@]} == 1 ]; then
+            directory=$(dirname ${values[0]})
+        fi
+    fi
+    echo $directory
+}

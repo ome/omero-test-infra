@@ -1,16 +1,18 @@
 #!/bin/sh
 
+source /infra/utils
+
 set -e
 set -u
 set -x
 
 printf "travis_fold:start:py-setup\n"
 
+
 TARGET=${TARGET:-..}
-DIR=${DIR:-.}
 
 cd $TARGET
-cd $DIR
+cd $(setup_dir)
 python setup.py sdist
 pip install dist/*.tar.gz
 python setup.py clean

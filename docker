@@ -9,7 +9,6 @@ set -u
 export ACTION=${ACTION:-""}
 export TRAVIS=${TRAVIS:-"false"}
 export VERBOSE=${VERBOSE:-"set +x"}
-export DIR=${DIR:-.}
 export PROJECT=${PROJECT:-omero}
 export NETWORK=${NETWORK:-"$PROJECT"_default}
 export TARGET=/$(basename $PWD)
@@ -26,7 +25,6 @@ if [ $# -eq 0 ]; then
     echo "Environment variables:"
     echo "  PROJECT - name of the docker-compose project ($PROJECT)"
     echo "  NETWORK - name of the docker network to use ($NETWORK)"
-    echo "  DIR     - current directory, by default ($DIR)"
     echo "  TARGET  - name of the component being installed ($TARGET)"
     echo "  ACTION  - use 'echo' to perform a dry-run ($ACTION)"
     echo "  TRAVIS  - whether to print travis_folds ($TRAVIS)"
