@@ -2,6 +2,18 @@
 set -e
 set -u
 
+##
+## Bash configuration
+##
+
+export ACTION=${ACTION:-""}
+export TRAVIS=${TRAVIS:-"false"}
+export VERBOSE=${VERBOSE:-"set +x"}
+export DIR=${DIR:-.}
+export PROJECT=${PROJECT:-omero}
+export NETWORK=${NETWORK:-"$PROJECT"_default}
+export TARGET=/$(basename $PWD)
+
 if [ $# -eq 0 ]; then
     echo "docker [stage [stage [stage]]]"
     echo
@@ -12,25 +24,19 @@ if [ $# -eq 0 ]; then
     echo "  scripts - installs OMERO.scripts into OMERO.server"
     echo
     echo "Environment variables:"
-    echo "  PROJECT - name of the docker-compose project"
-    echo "  DIR     - current directory, by default '.'"
-    echo "  TARGET  - name of the component being installed"
-    echo "  ACTION  - use 'echo' to perform a dry-run"
-    echo "  TRAVIS  - if set to true as in travis, then print folds"
+    echo "  PROJECT - name of the docker-compose project ($PROJECT)"
+    echo "  NETWORK - name of the docker network to use ($NETWORK)"
+    echo "  DIR     - current directory, by default ($DIR)"
+    echo "  TARGET  - name of the component being installed ($TARGET)"
+    echo "  ACTION  - use 'echo' to perform a dry-run ($ACTION)"
+    echo "  TRAVIS  - whether to print travis_folds ($TRAVIS)"
+    echo "  VERBOSE - set to 'set -x' to see all actions ($VERBOSE)"
     exit 2
 else
     STAGES="$@"
 fi
 
-##
-## Bash configuration
-##
-
-export ACTION=${ACTION:-""}
-export TRAVIS=${TRAVIS:-"false"}
-export DIR=${DIR:-.}
-export PROJECT=${PROJECT:-omero}
-export TARGET=/$(basename $PWD)
+$VERBOSE
 
 ##
 ## Start-up containers so we can configure them
@@ -52,6 +58,12 @@ run() {
     #  1) run .omeroci/$1-$2 if it exists, or
     #  2) run the default script in this directory of the same name.
 
+    LOCAL=false
+    if [ $1 == "--local" ]; then
+        LOCAL=true
+        shift
+    fi
+
     type=$1
     name=$2
     file="$1-$2"
@@ -62,17 +74,28 @@ run() {
         eval "$var=1"
         fold start $file
         if [ -e .omeroci/$file ]; then
-            $ACTION docker exec -u root $CID bash /$TARGET/.omeroci/$file
+            PREFIX=/$TARGET
+            LOCALPREFIX=""
+            ARGUMENT=.omeroci/$file
         elif [ -e $(dirname "$0")/$file ]; then
-            $ACTION docker exec -u root -e TARGET=$TARGET $CID /infra/$file
+            PREFIX=/infra
+            LOCALPREFIX=".omero"
+            ARGUMENT=$file
         elif [ -e $(dirname "$0")/$STAGE-$name ]; then
-            $ACTION docker exec -u root -e TARGET=$TARGET $CID /infra/$STAGE-$name
+            PREFIX=/infra
+            LOCALPREFIX=".omero"
+            ARGUMENT=$STAGE-$name
         else
             echo "No script found:"
             echo "  .omeroci/$file"
             echo "  $(dirname "$0")/$file"
             echo "  $(dirname "$0")/$STAGE-$name"
             return 2
+        fi
+        if [ "$LOCAL" == true ]; then
+            $ACTION $LOCALPREFIX/$ARGUMENT
+        else
+            $ACTION docker exec -u root -e TARGET=$TARGET $CID $PREFIX/$ARGUMENT
         fi
         fold end $file
     fi
@@ -115,7 +138,7 @@ for STAGE in $STAGES; do
         app)
             export COMPONENT=web
             export USER=omero-web
-            export CID="$PROJECT"_"$COMPONENT"_1
+            export CID="$PROJECT"_web_1
             install
             java
             run app deps
@@ -129,7 +152,7 @@ for STAGE in $STAGES; do
         cli)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_"$COMPONENT"_1
+            export CID="$PROJECT"_omero_1
             install
             wait_on_login
             run py setup
@@ -138,9 +161,9 @@ for STAGE in $STAGES; do
         lib)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_"$COMPONENT"_1
+            export CID="$PROJECT"_omero_1
             install
-            run lib build
+            run --local lib build
             wait_on_login
             run test data
             run lib test
@@ -148,7 +171,7 @@ for STAGE in $STAGES; do
         scripts)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_"$COMPONENT"_1
+            export CID="$PROJECT"_omero_!
             install
             run script deps || echo ignore
             run py common
