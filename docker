@@ -1,0 +1,167 @@
+#!/bin/bash
+set -e
+set -u
+
+if [ $# -eq 0 ]; then
+    echo "docker [stage [stage [stage]]]"
+    echo
+    echo "Stages:"
+    echo "  app     - installs plugin into OMERO.web"
+    echo "  cli     - installs plugin into OMERO.server"
+    echo "  lib     - builds and runs client-side library"
+    echo "  scripts - installs OMERO.scripts into OMERO.server"
+    echo
+    echo "Environment variables:"
+    echo "  PROJECT - name of the docker-compose project"
+    echo "  DIR     - current directory, by default '.'"
+    echo "  TARGET  - name of the component being installed"
+    echo "  ACTION  - use 'echo' to perform a dry-run"
+    echo "  TRAVIS  - if set to true as in travis, then print folds"
+    exit 2
+else
+    STAGES="$@"
+fi
+
+##
+## Bash configuration
+##
+
+export ACTION=${ACTION:-""}
+export TRAVIS=${TRAVIS:-"false"}
+export DIR=${DIR:-.}
+export PROJECT=${PROJECT:-omero}
+export TARGET=/$(basename $PWD)
+
+##
+## Start-up containers so we can configure them
+##
+$ACTION .omero/compose up -d --force-recreate
+
+##
+## Stages
+##
+
+fold() {
+    if [ "$TRAVIS" == "true" ]; then
+        printf "travis_fold:$1:$2\n"
+    fi
+}
+
+run() {
+    # Primary task which uses the first two arguments to either:
+    #  1) run .omeroci/$1-$2 if it exists, or
+    #  2) run the default script in this directory of the same name.
+
+    type=$1
+    name=$2
+    file="$1-$2"
+    var="$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
+    eval "$var=\${$var:-0}"
+
+    if [ "${!var}" == "0" ]; then
+        eval "$var=1"
+        fold start $file
+        if [ -e .omeroci/$file ]; then
+            $ACTION docker exec -u root $CID bash /$TARGET/.omeroci/$file
+        elif [ -e $(dirname "$0")/$file ]; then
+            $ACTION docker exec -u root -e TARGET=$TARGET $CID /infra/$file
+        elif [ -e $(dirname "$0")/$STAGE-$name ]; then
+            $ACTION docker exec -u root -e TARGET=$TARGET $CID /infra/$STAGE-$name
+        else
+            echo "No script found:"
+            echo "  .omeroci/$file"
+            echo "  $(dirname "$0")/$file"
+            echo "  $(dirname "$0")/$STAGE-$name"
+            return 2
+        fi
+        fold end $file
+    fi
+}
+
+install() {
+    $ACTION docker cp -L .      $CID:/$TARGET
+    $ACTION docker cp -L .omero $CID:/infra
+    $ACTION docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R $USER:$USER $TARGET /infra"
+}
+
+java() {
+    $ACTION docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/omego/bin/omego download java --sym /opt/omero/java
+    $ACTION docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
+}
+
+wait_on_login() {
+    $ACTION docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
+}
+
+
+app_config() {
+    # TODO: add to run
+    # Run custom server setup
+    if [ -e .omeroci/app-config ]; then
+        $ACTION docker exec $CID bash /$TARGET/.omeroci/app-config
+    else
+        NAME=$(echo $(basename $PWD) | tr - _)
+        $ACTION docker exec -e NAME=$NAME $CID /infra/app-config
+    fi
+}
+
+##
+## RUN STAGES
+##
+
+for STAGE in $STAGES; do
+    export $STAGE
+    case "$STAGE" in
+        app)
+            export COMPONENT=web
+            export USER=omero-web
+            export CID="$PROJECT"_"$COMPONENT"_1
+            install
+            java
+            run app deps
+            wait_on_login
+            run py common
+            run py check
+            run py setup
+            app_config
+            run app build
+            ;;
+        cli)
+            export COMPONENT=server
+            export USER=omero-server
+            export CID="$PROJECT"_"$COMPONENT"_1
+            install
+            wait_on_login
+            run py setup
+            run cli build
+            ;;
+        lib)
+            export COMPONENT=server
+            export USER=omero-server
+            export CID="$PROJECT"_"$COMPONENT"_1
+            install
+            run lib build
+            wait_on_login
+            run test data
+            run lib test
+            ;;
+        scripts)
+            export COMPONENT=server
+            export USER=omero-server
+            export CID="$PROJECT"_"$COMPONENT"_1
+            install
+            run script deps || echo ignore
+            run py common
+            run py checks || echo ignore
+            run py setup
+            run scripts copy
+            wait_on_login
+            run test data || echo ignore
+            run scripts build
+            ;;
+        *)
+            echo "Unknown stage: $STAGE"
+            exit 2
+            ;;
+    esac
+done
