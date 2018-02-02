@@ -177,7 +177,7 @@ for STAGE in $STAGES; do
             export USER=omero-server
             export CID="$PROJECT"_omero_!
             install
-            run script deps || echo ignore
+            run scripts deps || echo ignore
             run py common
             run py check
             run py setup
