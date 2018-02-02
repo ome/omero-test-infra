@@ -9,7 +9,6 @@ set -u
 DIR=${DIR:-.}
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_web_1}
-APP_BUILD=${APP_BUILD:-true}
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
@@ -38,7 +37,7 @@ else
   docker exec -u root -e TARGET=$TARGET $CID /infra/py-check
 fi
 
-docker exec -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/py-setup
+docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 
 # Run custom server setup
 if [ -e .omeroci/app-config ]; then
@@ -48,6 +47,4 @@ else
   docker exec -e NAME=$NAME $CID /infra/app-config
 fi
 
-if [ $APP_BUILD = true ]; then
-  docker exec  -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build
-fi
+docker exec  -u root -e TARGET=$TARGET -e DIR=$DIR $CID /infra/app-build

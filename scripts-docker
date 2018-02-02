@@ -9,8 +9,7 @@ set -x
 
 PROJECT=${PROJECT:-omero}
 CID=${CID:-"$PROJECT"_omero_1}
-DIR_SCRIPTS=${DIR_SCRIPTS:-omero}
-SET_UP=${SET_UP:-true}
+
 TARGET=/$(basename $PWD)
 .omero/compose up -d --force-recreate
 docker cp -L .      $CID:/$TARGET
@@ -36,7 +35,7 @@ if [ $SET_UP = true ]; then
   docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
 fi
 # copy the scripts
-docker exec -u omero-server -e TARGET=$TARGET -e DIR_SCRIPTS=$DIR_SCRIPTS $CID /infra/scripts-copy
+docker exec -u omero-server -e TARGET=$TARGET $CID /infra/scripts-copy
 
 docker exec $CID /infra/wait-on-login
 
