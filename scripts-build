@@ -11,6 +11,7 @@ export PYTHONPATH=${OMERO_DIST}/lib/python
 
 cd $TARGET
 
+pip install --upgrade pip setuptools
 python setup.py test -t test/integration -i ${OMERO_DIST}/etc/ice.config -v
 
 printf "travis_fold:end:scripts-build\n"
