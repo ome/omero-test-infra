@@ -149,7 +149,7 @@ for STAGE in $STAGES; do
             run py check
             run py setup
             app_config
-            run app build || echo ignore
+            run app build
             ;;
         cli)
             export COMPONENT=server
@@ -173,7 +173,7 @@ for STAGE in $STAGES; do
         scripts)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_omero_!
+            export CID="$PROJECT"_omero_1
             install
             run scripts deps || echo ignore
             run py common
