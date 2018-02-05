@@ -3,47 +3,4 @@
 # assumes:
 # git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
-set -e
-set -u
-set -x
-
-PROJECT=${PROJECT:-omero}
-CID=${CID:-"$PROJECT"_omero_1}
-
-TARGET=/$(basename $PWD)
-.omero/compose up -d --force-recreate
-docker cp -L .      $CID:/$TARGET
-docker cp -L .omero $CID:/infra
-docker exec -u root         $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
-
-# Run custom dependencies setup
-if [ -e .omeroci/scripts-deps ]; then
-  docker exec -u root $CID bash /$TARGET/.omeroci/scripts-deps
-fi
-
-# install setuptools and requirement
-docker exec -u root -e TARGET=$TARGET $CID /infra/py-common
-
-if [ -e .omeroci/scripts-check ]; then
-  docker exec -u root $CID bash /$TARGET/.omeroci/scripts-check
-else 
-  docker exec -u root -e TARGET=$TARGET $CID /infra/py-check
-fi
-
-#docker exec -u root         $CID yum install -y mencoder
-if [ $SET_UP = true ]; then
-  docker exec -u root -e TARGET=$TARGET $CID /infra/py-setup
-fi
-# copy the scripts
-docker exec -u omero-server -e TARGET=$TARGET $CID /infra/scripts-copy
-
-docker exec $CID /infra/wait-on-login
-
-# Run custom server setup
-if [ -e .omeroci/test-data ]; then
-  printf "travis_fold:start:test-data\n"
-  docker exec -ti $CID /$TARGET/.omeroci/test-data
-  printf "travis_fold:end:test-data\n"
-fi
-
-docker exec -u omero-server -e TARGET=$TARGET $CID /infra/scripts-build
+. "$(dirname "$0")"/docker scripts

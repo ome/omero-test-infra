@@ -3,35 +3,4 @@
 # assumes:
 # git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
-export DOCKER_ARGS=${DOCKER_ARGS:-""}
-
-set -e
-set -u
-set -x
-
-# TODO: Refactor this into a common docker-setup
-PROJECT=${PROJECT:-omero}
-CID=${CID:-"$PROJECT"_omero_1}
-NETWORK=${NETWORK:-"$PROJECT"_default}
-TARGET=/$(basename $PWD)
-.omero/compose up -d --force-recreate
-docker cp -L .      $CID:/$TARGET
-docker cp -L .omero $CID:/infra
-docker exec -u root $CID sh -c "chown -R omero-server:omero-server $TARGET /infra"
-
-# Build the library that should be run on the client-side
-docker build -t test .
-
-# Check that we can login to the server
-docker exec $CID /infra/wait-on-login
-
-# Run custom server setup
-if [ -e .omeroci/test-data ];
-then
-  printf "travis_fold:start:test-data\n"
-  docker exec -ti $CID /$TARGET/.omeroci/test-data
-  printf "travis_fold:end:test-data\n"
-fi
-
-# Run the tests in the library docker
-docker run --link $CID:omero --net $NETWORK --rm $DOCKER_ARGS test
+e. "$(dirname "$0")"/docker lib
