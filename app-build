@@ -6,8 +6,6 @@ set -e
 set -u
 set -x
 
-printf "travis_fold:start:app-build\n"
-
 TARGET=${TARGET:-..}
 cd $TARGET
 DIR=$(setup_dir)
@@ -21,5 +19,3 @@ export PYTHONPATH=${OMERO_DIST}/lib/python:${OMERO_DIST}/lib/python/omeroweb
 set +u
 source /opt/omero/web/venv/bin/activate
 ICE_CONFIG=${OMERO_DIST}/etc/ice.config python $DIR/setup.py test
-
-printf "travis_fold:end:app-build\n"

@@ -2,8 +2,6 @@
 set -u
 set -x
 
-printf "travis_fold:start:py-common\n"
-
 TARGET=${TARGET:-..}
 
 dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
@@ -11,5 +9,3 @@ cd $TARGET
 
 pip install --upgrade pip setuptools
 pip install -r $dir/requirements.txt
-
-printf "travis_fold:end:py-common\n"

@@ -4,8 +4,6 @@ set -e
 set -u
 set -x
 
-printf "travis_fold:start:scripts-copy\n"
-
 export TARGET=${TARGET:-..}
 export OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
 
@@ -13,5 +11,3 @@ rm -rf $OMERO_DIST/lib/scripts/omero
 
 cd $TARGET
 cp -r omero $OMERO_DIST/lib/scripts/
-
-printf "travis_fold:end:scripts-copy\n"

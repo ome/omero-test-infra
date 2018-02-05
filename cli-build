@@ -4,8 +4,6 @@ set -e
 set -u
 set -x
 
-printf "travis_fold:start:cli-build\n"
-
 TARGET=${TARGET:-..}
 cd $TARGET
 
@@ -17,5 +15,3 @@ $OMERO_DIST/bin/omero $PLUGIN -h
 
 export PYTHONPATH=${OMERO_DIST}/lib/python
 python setup.py test -t test/integration/clitest -i ${OMERO_DIST}/etc/ice.config -v
-
-printf "travis_fold:end:cli-build\n"
