@@ -1,8 +1,14 @@
 #!/bin/bash
 set -e
 set +u
-NAME=$NAME
+
+source /infra/utils
+
+export TARGET=${TARGET:-./}
+cd $TARGET
+
+# format the name of the app
+name=$(get_app_name)
 
 source /opt/omero/web/venv/bin/activate
-
-/opt/omero/web/OMERO.web/bin/omero config append omero.web.apps '"$NAME"'
+/opt/omero/web/OMERO.web/bin/omero config append omero.web.apps '"$name"'

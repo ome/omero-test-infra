@@ -13,3 +13,8 @@ setup_dir() {
     fi
     echo $directory
 }
+
+get_app_name() {
+    # convert the directory name into the app name
+    echo $(echo $(basename $PWD) | tr - _)
+}

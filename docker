@@ -118,18 +118,6 @@ wait_on_login() {
     $ACTION docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
 }
 
-
-app_config() {
-    # TODO: add to run
-    # Run custom server setup
-    if [ -e .omeroci/app-config ]; then
-        $ACTION docker exec $CID bash /$TARGET/.omeroci/app-config
-    else
-        NAME=$(echo $(basename $PWD) | tr - _)
-        $ACTION docker exec -e NAME=$NAME $CID /infra/app-config
-    fi
-}
-
 ##
 ## RUN STAGES
 ##
@@ -148,7 +136,7 @@ for STAGE in $STAGES; do
             run py common
             run py check
             run py setup
-            app_config
+            run --user app config
             run app build
             ;;
         cli)
