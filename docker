@@ -97,7 +97,7 @@ run() {
         if [ "$LOCAL" == true ]; then
             $ACTION $LOCALPREFIX/$ARGUMENT
         else
-            $ACTION docker exec $CALLAS -e TARGET=$TARGET $CID $PREFIX/$ARGUMENT
+            $ACTION docker exec $CALLAS -e TARGET=$TARGET -e OMERO_DIST=$OMERO_DIST $CID $PREFIX/$ARGUMENT
         fi
         fold end $file
     fi
@@ -129,6 +129,7 @@ for STAGE in $STAGES; do
             export COMPONENT=web
             export USER=omero-web
             export CID="$PROJECT"_web_1
+            export OMERO_DIST="/opt/omero/web/OMERO.web"
             install
             java
             run app deps || echo ignore
@@ -143,6 +144,7 @@ for STAGE in $STAGES; do
             export COMPONENT=server
             export USER=omero-server
             export CID="$PROJECT"_omero_1
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
             install
             wait_on_login
             run py setup
@@ -152,6 +154,7 @@ for STAGE in $STAGES; do
             export COMPONENT=server
             export USER=omero-server
             export CID="$PROJECT"_omero_1
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
             install
             run --local lib build
             wait_on_login
@@ -162,6 +165,7 @@ for STAGE in $STAGES; do
             export COMPONENT=server
             export USER=omero-server
             export CID="$PROJECT"_omero_1
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
             install
             run scripts deps || echo ignore
             run py common

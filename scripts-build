@@ -4,11 +4,8 @@ set -e
 set -u
 set -x
 
-export TARGET=${TARGET:-..}
-export OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
-export PYTHONPATH=${OMERO_DIST}/lib/python
 
 cd $TARGET
 
-pip install --upgrade pip setuptools
+#pip install --upgrade pip setuptools
 python setup.py test -t test/integration -i ${OMERO_DIST}/etc/ice.config -v
