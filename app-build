@@ -6,12 +6,10 @@ set -e
 set -u
 set -x
 
-TARGET=${TARGET:-..}
 cd $TARGET
 DIR=$(setup_dir)
 
-export OMERO_DIST=${OMERO_DIST:-/opt/omero/web/OMERO.web}
-export PYTHONPATH=${OMERO_DIST}/lib/python:${OMERO_DIST}/lib/python/omeroweb
+export PYTHONPATH=$PYTHONPATH:${OMERO_DIST}/lib/python/omeroweb
 # TBD: unify on test or tests
 # TBD: needs setup.py infra
 # python setup.py test -t test* -i ${OMERO_DIST}/etc/ice.config -v

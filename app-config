@@ -4,7 +4,6 @@ set +u
 
 source /infra/utils
 
-export TARGET=${TARGET:-./}
 cd $TARGET
 
 # format the name of the app
