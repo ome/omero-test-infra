@@ -170,7 +170,7 @@ for STAGE in $STAGES; do
             run scripts copy
             wait_on_login
             run --user test data || echo ignore
-            run scripts build
+            run --user scripts build
             ;;
         *)
             echo "Unknown stage: $STAGE"
