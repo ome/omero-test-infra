@@ -7,5 +7,4 @@ set -x
 
 cd $TARGET
 
-#pip install --upgrade pip setuptools
 python setup.py test -t test/integration -i ${OMERO_DIST}/etc/ice.config -v
