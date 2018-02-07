@@ -1,23 +1,16 @@
-#!/bin/sh
+#!/bin/bash
+
+source /infra/utils
 
 set -e
 set -u
 set -x
 
-printf "travis_fold:start:py-setup\n"
-
 TARGET=${TARGET:-..}
 
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 cd $TARGET
-pip install --upgrade pip setuptools
-pip install -r $dir/requirements.txt
-flake8 -v .
-rst-lint README.rst
-
+cd $(setup_dir)
 python setup.py sdist
 pip install dist/*.tar.gz
 python setup.py clean
 rm -rf dist *egg-info src/*egg-info
-
-printf "travis_fold:end:py-setup\n"

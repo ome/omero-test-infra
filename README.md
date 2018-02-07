@@ -33,11 +33,16 @@ being specified in `.env`.
 Docker commands
 ---------------
 
-Each of the `*-docker` commands runs a full build in the given style:
+To run a full build and install the desire applications, it is
+recommended to use
 
- * `app-docker` for testing OMERO.web applications
- * `cli-docker` for testing `omero-cli-*` projects
- * `lib-docker` for testing client-side libraries
+ * .omero/docker NAME
+
+where NAME is `app`, `cli`, `lib` or `scripts`.
+
+It is also possible to combine several application e.g.
+
+ * .omero/docker app scripts
 
 These scripts are invoked directly by the `script` step in project .travis.yml
 files.
@@ -45,7 +50,9 @@ files.
 Other commands
 --------------
 
- * `py-setup` runs standard Python package build steps
+ * `py-check` runs standard Python quality tools
+ * `py-common` runs standard Python package build steps
+ * `py-setup` builds and install the Python package
  * `wait-on-login` periodically attempts to login to OMERO.server
 
  Environment variables

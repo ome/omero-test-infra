@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+set -u
+set -x
+
+TARGET=${TARGET:-..}
+
+cd $TARGET
+flake8 -v .
+rst-lint README.rst
