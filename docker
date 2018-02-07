@@ -138,7 +138,7 @@ for STAGE in $STAGES; do
             run py check
             run py setup
             run --user app config
-            run app build
+            run --user app build
             ;;
         cli)
             export COMPONENT=server
