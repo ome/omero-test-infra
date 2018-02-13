@@ -104,12 +104,7 @@ run() {
 }
 
 install() {
-    SOURCE=true
-    if [ $1 == "--nosrc" ]; then
-        SOURCE=false
-        shift
-    fi
-    if [ "$SOURCE" == true ]; then
+    if [ $# -eq 0 ] || [ $1 != "--nosrc" ]; then
         $ACTION docker cp -L .      $CID:/$TARGET
         $ACTION docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R $USER:$USER $TARGET"
     fi
@@ -124,7 +119,7 @@ java() {
 
 wait_on_login() {
     OMERO_HOST="-e OMERO_HOST=omero"
-    if [ $1 == "--localhost" ]; then
+    if [ $# -gt 0 ] && $1 == "--localhost" ]; then
         OMERO_HOST=""
         shift
     fi
