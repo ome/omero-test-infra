@@ -38,8 +38,7 @@ fi
 $VERBOSE
 
 start_up() {
-    COMPOSE_FILES=${COMPOSE_FILES:-""}
-    $ACTION .omero/compose ${COMPOSE_FILES} up -d --force-recreate "$@"
+    $ACTION .omero/compose up -d --force-recreate "$@"
 }
 
 ##
@@ -199,7 +198,7 @@ for STAGE in $STAGES; do
             export COMPONENT=server
             export USER=omero-server
             export CID="$PROJECT"_omero_1
-            export COMPOSE_FILES=${COMPOSE_FILES:-"-f srv-compose.yml"}
+            export COMPOSE_FILE=${COMPOSE_FILE:-"srv-compose.yml"}
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
             install --nosrc
