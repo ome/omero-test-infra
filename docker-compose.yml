@@ -21,6 +21,11 @@ services:
   web:
     image: ${OMERO_WEB_IMAGE}:${OMERO_WEB_VERSION}
     environment:
+      - CONFIG_omero_web_public_enabled=${OMERO_WEB_PUBLIC_ENABLED}
+      - CONFIG_omero_web_public_server_id=${OMERO_WEB_PUBLIC_SERVER_ID}
+      - CONFIG_omero_web_public_user=${OMERO_WEB_PUBLIC_USER}
+      - CONFIG_omero_web_public_password=${OMERO_WEB_PUBLIC_PASSWORD}
+      - CONFIG_omero_web_public_url__filter=${OMERO_WEB_PUBLIC_URL_FILTER}
       - CONFIG_omero_upgrades_url=
       - CONFIG_Ice_IPv6=0
       - PYTHONPATH=/opt/omero/web/OMERO.web/lib/python
