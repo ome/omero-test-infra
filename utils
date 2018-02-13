@@ -18,3 +18,7 @@ get_app_name() {
     # convert the directory name into the app name
     echo $(echo $(basename $PWD) | tr - _)
 }
+
+get_project_name() {
+   echo $(get_app_name | tr -cd '[[:alnum:]]')
+}

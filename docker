@@ -6,10 +6,11 @@ set -u
 ## Bash configuration
 ##
 
+. .omero/utils
 export ACTION=${ACTION:-""}
 export TRAVIS=${TRAVIS:-"false"}
 export VERBOSE=${VERBOSE:-"set +x"}
-export PROJECT=${PROJECT:-omero}
+export PROJECT=${PROJECT:-$(get_project_name)}
 export NETWORK=${NETWORK:-"$PROJECT"_default}
 export TARGET=/$(basename $PWD)
 
