@@ -147,6 +147,17 @@ for STAGE in $STAGES; do
             install
             java
             run app deps || echo ignore
+            # As the only web-container action
+            # give the app a chance to modify
+            # the docker container. This may
+            # need to be formalized later.
+            (
+                USER=omero-server
+                CID="${PROJECT}_omero_1"
+                OMERO_DIST="/opt/omero/server/OMERO.server"
+                install
+                run app srv || echo ignore
+            )
             wait_on_login
             run py common
             run py check
