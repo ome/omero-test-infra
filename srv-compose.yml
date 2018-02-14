@@ -16,5 +16,5 @@ services:
       - CONFIG_Ice_IPv6=0
       - PYTHONPATH=/opt/omero/server/OMERO.server/lib/python
     ports:
-      - "${OMERO_SERVER_TCP}:4063"
-      - "${OMERO_SERVER_SSL}:4064"
+      - "${OMERO_SERVER_TCP}4063"
+      - "${OMERO_SERVER_SSL}4064"
