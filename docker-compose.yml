@@ -16,8 +16,8 @@ services:
       - CONFIG_Ice_IPv6=0
       - PYTHONPATH=/opt/omero/server/OMERO.server/lib/python
     ports:
-      - "${OMERO_SERVER_TCP}:4063"
-      - "${OMERO_SERVER_SSL}:4064"
+      - "${OMERO_SERVER_TCP}4063"
+      - "${OMERO_SERVER_SSL}4064"
   web:
     image: ${OMERO_WEB_IMAGE}:${OMERO_WEB_VERSION}
     environment:
@@ -25,6 +25,4 @@ services:
       - CONFIG_Ice_IPv6=0
       - PYTHONPATH=/opt/omero/web/OMERO.web/lib/python
     ports:
-      - "${OMERO_WEB_PORT}:4080"
-
-# TBD: add client
+      - "${OMERO_WEB_PORT}4080"
