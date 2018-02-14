@@ -69,10 +69,12 @@ run() {
     type=$1
     name=$2
     file="$1-$2"
-    var="$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
+    var="${CID}_$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
     eval "$var=\${$var:-0}"
 
-    if [ "${!var}" == "0" ]; then
+    if [ "${!var}" == "1" ]; then
+        echo "$file already run for $CID"
+    else
         eval "$var=1"
         fold start $file
         if [ -e .omeroci/$file ]; then
