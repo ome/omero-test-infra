@@ -126,6 +126,9 @@ wait_on_login() {
         shift
     fi
     $ACTION docker exec $OMERO_HOST $CID /infra/wait-on-login
+    # Once we have successfully waited on login, speed up
+    # subsequent calls
+    export SLEEP_TIME=0
 }
 
 ##
