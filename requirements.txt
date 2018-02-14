@@ -2,9 +2,9 @@ flake8
 pep8-naming
 pycodestyle
 restructuredtext_lint
-pytest
+pytest==3.3.2
 restview
 mox
 # TODO: Apps only
-pytest-runner
-pytest-django
+pytest-django==3.1.2
+pytest-runner==3.0.1
