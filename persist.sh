@@ -6,14 +6,14 @@ dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 . ${dir}/utils
 PROJECT=${PROJECT:-$(get_project_name)}
-ACTION=backup
+p_or_b=backup
 if [ $# -lt 1 ];
 then
     echo "persist.sh [--restore] backupdir"
     exit 2
 elif [ $1 == "--restore" ];
 then
-    ACTION=restore
+    p_or_b=restore
     shift
 fi
 
@@ -36,17 +36,17 @@ function restore_volume {
 }
 
 function main {
-  echo "Mounting volumes and performing $ACTION"
+  echo "Mounting volumes and performing $p_or_b"
   for v in ${PROJECT}_dbdata ${PROJECT}_omerodata
   do
-    if [ "$ACTION" == "backup" ]
+    if [ "$p_or_b" == "backup" ]
     then
       backup_volume $v $backup_path
-    elif [ "$ACTION" == "restore" ]
+    elif [ "$p_or_b" == "restore" ]
     then
       restore_volume $v $backup_path
     else
-      echo "Unknown command: $ACTION"
+      echo "Unknown command: $p_or_b"
       exit 2
     fi
   done

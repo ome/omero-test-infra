@@ -15,14 +15,12 @@ backupurl=$1
 backupdir=$2
 backupsrc=${BACKUPSRC:-"${backupdir}/omero_test_infra_backup.zip"}
 
-if [ ! -d ${backupdir} ];
-then
+if [ ! -d ${backupdir} ]; then
     echo "Creating ${backupdir}..."
     mkdir -p ${backupdir}
 fi
 
-if [ ! -f ${backupdir}/${project}_dbdata.tar ] || [ ! -f ${backupdir}/${project}_omerodata.tar ];
-then
+if [ ! -f ${backupdir}/${project}_dbdata.tar ] || [ ! -f ${backupdir}/${project}_omerodata.tar ]; then
     echo "Tarballs not found..."
     if [ ! -f ${backupsrc} ]; then
         echo "Backup zip not found..."
