@@ -170,8 +170,9 @@ for STAGE in $STAGES; do
             start_up
             install
             wait_on_login
+            run py update
             run py setup
-            run cli build
+            run --user cli build
             ;;
         lib)
             export COMPONENT=server
