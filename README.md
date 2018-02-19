@@ -50,7 +50,7 @@ It is also possible to combine several application e.g.
 
  * .omero/docker app scripts
 
-but each of the applications must pass when its run alone as well.
+but each of the applications must pass when it is run alone as well.
 
 These commands should be invoked by the `script` step in the project's
 .travis.yml file. Set any environment variables as necessary.
