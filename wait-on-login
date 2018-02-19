@@ -1,61 +1,57 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
-if [ ! -e $OMERO_DIST ];
-then
-    OMERO_DIST=/opt/omero/web/OMERO.web
-fi
-
-OMERO_HOST=${OMERO_HOST:-localhost}
-OMERO_PORT=${OMERO_PORT:-4064}
-OMERO_USER=${OMERO_USER:-root}
-OMERO_PASS=${OMERO_PASS:-omero}
-SLEEP_TIME=${SLEEP_TIME:-30}
-
-export PATH=$PATH:${OMERO_DIST}/bin
+import atexit
+import omero
+import os
+import socket
+import time
 
 
-max_attempts=10
+OMERO_DIST = os.environ.get("OMERO_DIST", "/opt/omero/server/OMERO.server")
+if not os.path.exists(OMERO_DIST):
+	OMERO_DIST = "/opt/omero/web/OMERO.web"
 
-function end {
-    printf "travis_fold:end:wait-on-login\n"
-}
-
-trap end EXIT
-
-printf "travis_fold:start:wait-on-login\n"
+OMERO_HOST = os.environ.get("OMERO_HOST", "localhost")
+OMERO_USER = os.environ.get("OMERO_USER", "root")
+OMERO_PASS = os.environ.get("OMERO_PASS", "omero")
+OMERO_PORT = int(os.environ.get("OMERO_PORT", "4064"))
+SLEEP_TIME = int(os.environ.get("SLEEP_TIME", "30"))
 
 
-# First: wait until the OMERO port is listening
-attempt_num=1
-until python -c "import socket; assert socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex(('$OMERO_HOST', $OMERO_PORT)) == 0"
-do
-    if (( attempt_num == max_attempts ))
-    then
-        echo "No ports open"
-        exit 1
-    fi
+def end():
+    print "travis_fold:end:wait-on-login"
 
-    echo "Port attempt $(( attempt_num++ )) failed. Trying again in $attempt_num seconds..."
-    sleep $attempt_num
+atexit.register(end)
 
-done
+print "travis_fold:start:wait-on-login"
+
+
+def port_is_open():
+    rc = socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex((OMERO_HOST, OMERO_PORT))
+    return (rc == 0)
+
+
+for x in range(1, 31):
+    if port_is_open():
+        break
+    else:
+        time.sleep(1.0)
+        print "waiting on port: #%s" % x
+
 
 # HACK: This 'ready' detection is still not working. Adding a hard sleep to be safe.
-echo Sleeping for ${SLEEP_TIME}
-sleep ${SLEEP_TIME}
+print "Sleeping for", SLEEP_TIME
+time.sleep(SLEEP_TIME)
 
 # Second: try to login
-attempt_num=1
-until omero login $OMERO_USER@$OMERO_HOST:$OMERO_PORT -w $OMERO_PASS 2>&1 >/dev/null
-do
-    if (( attempt_num == max_attempts ))
-    then
-        echo "All attempts failed"
-        exit 1
-    fi
-
-    echo "Login attempt $(( attempt_num++ )) failed. Trying again in $attempt_num seconds..."
-    sleep $attempt_num
-
-done
+for x in range(1, 6):
+    # https://trello.com/c/rPstbt4z/216-open-ssl-110
+    client = omero.client(OMERO_HOST, OMERO_PORT)
+    try:
+        client.createSession(OMERO_USER, OMERO_PASS)
+        break
+    except:
+        print "Login attempt %s failed. Trying again in %s seconds" % (x, x+1)
+        time.sleep(x+1)
+    finally:
+        client.__del__()

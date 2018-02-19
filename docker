@@ -6,10 +6,11 @@ set -u
 ## Bash configuration
 ##
 
+. .omero/utils
 export ACTION=${ACTION:-""}
 export TRAVIS=${TRAVIS:-"false"}
 export VERBOSE=${VERBOSE:-"set +x"}
-export PROJECT=${PROJECT:-omero}
+export PROJECT=${PROJECT:-$(get_project_name)}
 export NETWORK=${NETWORK:-"$PROJECT"_default}
 export TARGET=/$(basename $PWD)
 
@@ -36,10 +37,9 @@ fi
 
 $VERBOSE
 
-##
-## Start-up containers so we can configure them
-##
-$ACTION .omero/compose up -d --force-recreate
+start_up() {
+    $ACTION .omero/compose up -d --force-recreate "$@"
+}
 
 ##
 ## Stages
@@ -69,10 +69,12 @@ run() {
     type=$1
     name=$2
     file="$1-$2"
-    var="$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
+    var="${CID}_$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
     eval "$var=\${$var:-0}"
 
-    if [ "${!var}" == "0" ]; then
+    if [ "${!var}" == "1" ]; then
+        echo "$file already run for $CID"
+    else
         eval "$var=1"
         fold start $file
         if [ -e .omeroci/$file ]; then
@@ -104,9 +106,12 @@ run() {
 }
 
 install() {
-    $ACTION docker cp -L .      $CID:/$TARGET
+    if [ $# -eq 0 ] || [ $1 != "--nosrc" ]; then
+        $ACTION docker cp -L .      $CID:/$TARGET
+        $ACTION docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R $USER:$USER $TARGET"
+    fi
     $ACTION docker cp -L .omero $CID:/infra
-    $ACTION docker exec -u root -e TARGET=$TARGET $CID sh -c "chown -R $USER:$USER $TARGET /infra"
+    $ACTION docker exec -u root $CID sh -c "chown -R $USER:$USER /infra"
 }
 
 java() {
@@ -115,7 +120,12 @@ java() {
 }
 
 wait_on_login() {
-    $ACTION docker exec -e OMERO_HOST=omero $CID /infra/wait-on-login
+    OMERO_HOST="-e OMERO_HOST=omero"
+    if [ $# -gt 0 ] && $1 == "--localhost" ]; then
+        OMERO_HOST=""
+        shift
+    fi
+    $ACTION docker exec $OMERO_HOST $CID /infra/wait-on-login
 }
 
 ##
@@ -130,9 +140,21 @@ for STAGE in $STAGES; do
             export USER=omero-web
             export CID="$PROJECT"_web_1
             export OMERO_DIST="/opt/omero/web/OMERO.web"
+            start_up
             install
             java
             run app deps || echo ignore
+            # As the only web-container action
+            # give the app a chance to modify
+            # the docker container. This may
+            # need to be formalized later.
+            (
+                USER=omero-server
+                CID="${PROJECT}_omero_1"
+                OMERO_DIST="/opt/omero/server/OMERO.server"
+                install
+                run app srv || echo ignore
+            )
             wait_on_login
             run py common
             run py check
@@ -145,16 +167,19 @@ for STAGE in $STAGES; do
             export USER=omero-server
             export CID="$PROJECT"_omero_1
             export OMERO_DIST="/opt/omero/server/OMERO.server"
+            start_up
             install
             wait_on_login
+            run py update
             run py setup
-            run cli build
+            run --user cli build
             ;;
         lib)
             export COMPONENT=server
             export USER=omero-server
             export CID="$PROJECT"_omero_1
             export OMERO_DIST="/opt/omero/server/OMERO.server"
+            start_up
             install
             run --local lib build
             wait_on_login
@@ -166,6 +191,7 @@ for STAGE in $STAGES; do
             export USER=omero-server
             export CID="$PROJECT"_omero_1
             export OMERO_DIST="/opt/omero/server/OMERO.server"
+            start_up
             install
             run scripts deps || echo ignore
             run py common
@@ -176,6 +202,18 @@ for STAGE in $STAGES; do
             run --user test data || echo ignore
             run py update
             run --user scripts build
+            ;;
+        srv)
+            export COMPONENT=server
+            export USER=omero-server
+            export CID="$PROJECT"_omero_1
+            export COMPOSE_FILE=${COMPOSE_FILE:-"srv-compose.yml"}
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
+            start_up
+            install --nosrc
+            run py common
+            wait_on_login --localhost
+            run --user srv test
             ;;
         *)
             echo "Unknown stage: $STAGE"

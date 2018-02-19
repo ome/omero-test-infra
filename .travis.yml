@@ -1,0 +1,29 @@
+language: python
+
+virtualenv:
+  system_site_packages: true
+
+sudo: required
+
+services:
+  - docker
+
+# Use Travis to test the persist/restore
+# workflow since that is not currently
+# tested elsewhere.
+
+env:
+  - COMPOSE_FILE=docker-compose.yml:volumes.yml
+
+before_install:
+  - mkdir /tmp/omero-app
+  - cp -r . /tmp/omero-app/.omero
+  - cd /tmp/omero-app
+
+script:
+  - cd /tmp/omero-app
+  - .omero/compose up -d
+  - sleep 10
+  - .omero/compose down
+  - .omero/persist.sh backup
+  - .omero/persist.sh --restore backup

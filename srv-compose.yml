@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   omero:
-    image: ${OMERO_SERVER_IMAGE}:${OMERO_SERVER_VERSION}
+    build: ..
     environment:
       - ROOTPASS=${ROOTPASS}
       - CONFIG_omero_db_user=postgres
@@ -18,11 +18,3 @@ services:
     ports:
       - "${OMERO_SERVER_TCP}4063"
       - "${OMERO_SERVER_SSL}4064"
-  web:
-    image: ${OMERO_WEB_IMAGE}:${OMERO_WEB_VERSION}
-    environment:
-      - CONFIG_omero_upgrades_url=
-      - CONFIG_Ice_IPv6=0
-      - PYTHONPATH=/opt/omero/web/OMERO.web/lib/python
-    ports:
-      - "${OMERO_WEB_PORT}4080"
