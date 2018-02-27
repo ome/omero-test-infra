@@ -183,7 +183,7 @@ for STAGE in $STAGES; do
             install
             run --local lib build
             wait_on_login
-            run --user test data
+            run --user test data || echo ignore
             run --local lib test
             ;;
         scripts)
