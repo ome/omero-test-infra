@@ -55,8 +55,22 @@ but each of the applications must pass when it is run alone as well.
 These commands should be invoked by the `script` step in the project's
 .travis.yml file. Set any environment variables as necessary.
 
-Hooks
------
+Extension mechanisms
+--------------------
+
+If none of the commands above work for your scenario, there are a
+number of extension mechanisms that you can make use of.
+
+ * Add your own task hook
+ * Dockerfile: some commands assume a Dockerfile
+ * Modify environment (.env)
+   - different docker images
+ * One or more compose files
+
+Finally, if none of these options cover what you need, please
+contact us via GitHub issues to suggest a new stage command.
+
+### Hooks ###
 
 Each command runs a number of subcommands or tasks which can be
 overridden by placing an executable file of the same name in an
@@ -68,8 +82,32 @@ overridden by placing an executable file of the same name in an
  * `py-common` runs standard Python package build steps
  * `py-setup` builds and install the Python package
 
- Helper scripts
- --------------
+### Environment variables ###
+
+The .env defines a number of variables that can optionally be passed
+to docker instances if specified in the docker compile file. By setting
+these values in your calling environment or updating the .env file, you
+can influence the behavior of omero-test-infra. Of particular use are:
+
+ * `ROOTPASS` and `POSTGRES_PASSWORD` for securing your installation
+ * `*_IMAGE` for choosing other bases Docker images
+ * `*_PORT` for mapping local ports to the services, e.g. "OMERO_SERVER_PORT=4064:"
+   would be a common choice if you aren't already using the port 4064
+
+Other environment arguments that omero-test-infra uses:
+
+ * `DOCKER_ARGS` will be passed to `docker run ... test` to allow
+   mounting additional directories or exposing ports. (Deprecated)
+
+### Docker compose files ###
+
+ * `docker-compose.yml` is the main compose file in use by most tasks.
+
+Helper scripts
+--------------
+
+Some of the other scripts in this repository are generally useful
+for interacting with the services started by omero-test-infra:
 
  * `wait-on-login` periodically attempts to login to OMERO.server
  * `persist.sh` generates tarballs of the contents of the
@@ -77,9 +115,3 @@ overridden by placing an executable file of the same name in an
    restores from these tar balls.
  * `download.sh` downloads and unpacks a zip file containing
    persisted tarballs.
-
- Environment variables
- ---------------------
-
- * `DOCKER_ARGS` will be passed to `docker run ... test` to allow
-   mounting additional directories or exposing ports.
