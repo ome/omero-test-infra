@@ -1,0 +1,45 @@
+---
+- hosts: localhost
+  vars:
+    omero_redis_host_ansible: redis
+    omero_web_role_release: 1.0.2
+    omero_web_apps_role_release: 0.1.0
+    idr_deployment_release: IDR-0.4.5
+
+  tasks:
+
+    - file:
+        state: directory
+        path: /tmp/idr/
+
+    - get_url:
+        url: https://raw.githubusercontent.com/openmicroscopy/ansible-role-omero-web/{{ omero_web_role_release }}/defaults/main.yml
+        dest: /tmp/idr/omero-web-defaults.yml
+
+    - get_url:
+        url: https://raw.githubusercontent.com/openmicroscopy/ansible-role-omero-web-apps/{{ omero_web_apps_role_release }}/defaults/main.yml
+        dest: /tmp/idr/omero-web-apps-defaults.yml
+
+    - get_url:
+        url: "{{ item }}"
+        dest: "/tmp/idr"
+      with_items:
+        - https://raw.githubusercontent.com/IDR/deployment/{{ idr_deployment_release }}/ansible/group_vars/omero-hosts.yml
+        - https://raw.githubusercontent.com/openmicroscopy/ansible-role-omero-web/{{ omero_web_role_release }}/templates/00-omero-web-omero.j2
+        - https://raw.githubusercontent.com/openmicroscopy/ansible-role-omero-web-apps/{{ omero_web_apps_role_release }}/templates/omero-web-apps-omero.j2
+
+    - include_vars: /tmp/idr/omero-web-defaults.yml
+
+    - include_vars: /tmp/idr/omero-web-apps-defaults.yml
+
+    - include_vars: /tmp/idr/omero-hosts.yml
+
+    - template:
+        dest: "/opt/omero/web/config/10-idr-web.omero"
+        src: /tmp/idr/00-omero-web-omero.j2
+        force: yes
+
+    - template:
+        dest: "/opt/omero/web/config/20-idr-apps.omero"
+        src: /tmp/idr/omero-web-apps-omero.j2
+        force: yes
