@@ -20,5 +20,5 @@ get_app_name() {
 }
 
 get_project_name() {
-   echo $(get_app_name | tr -cd '[[:alnum:]]')
+   echo $(get_app_name | tr -cd '[[:alnum:]]' | tr /A-Z/ /a-z/)
 }
