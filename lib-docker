@@ -3,4 +3,4 @@
 # assumes:
 # git clone --recurse-submodules git://github.com/openmicroscopy/omero-test-infra .omero
 
-e. "$(dirname "$0")"/docker lib
+. "$(dirname "$0")"/docker lib
