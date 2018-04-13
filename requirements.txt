@@ -1,6 +1,6 @@
 flake8
 pep8-naming
-pycodestyle
+pycodestyle<2.4.0
 restructuredtext_lint
 pytest==3.3.2
 restview
