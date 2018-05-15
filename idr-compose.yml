@@ -15,15 +15,18 @@ services:
       - PYTHONPATH=/opt/omero/server/OMERO.server/lib/python
       - CONFIG_omero_db_name=2018-02-12
       - CONFIG_omero_db_host=redirect
-      - CONFIG_omero_db_user=postgres
+      - CONFIG_omero_db_user=omeroreadonly
       - CONFIG_omero_data_dir=/OMERO
+      - CONFIG_omero_cluster_read__only.db=true
+      - CONFIG_omero_cluster_read__only.repo=true
     ports:
       - "${OMERO_SERVER_TCP}4063"
       - "${OMERO_SERVER_SSL}4064"
     volumes:
+      - /uod/idr/current/OMERO:/OMERO:ro
       - /uod/idr/filesets:/uod/idr/filesets:ro
       - ./idr/omero/playbook.yml:/opt/setup/idr.yml:ro
-      - ./idr/40-ansible.sh:/startup/40-ansible.sh
+      - ./idr/40-ansible.sh:/startup/40-ansible.sh:ro
       - ./idr/70-reset-password.sh:/startup/70-reset-password.sh:ro
   web:
     build: idr/web
