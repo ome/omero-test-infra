@@ -23,7 +23,7 @@ services:
       - "${OMERO_SERVER_TCP}4063"
       - "${OMERO_SERVER_SSL}4064"
     volumes:
-      - /uod/idr/current/OMERO:/OMERO:ro
+      - /uod/idr/current/OMERO:/data/OMERO:ro
       - /uod/idr/filesets:/uod/idr/filesets:ro
       - ./idr/omero/playbook.yml:/opt/setup/idr.yml:ro
       - ./idr/40-ansible.sh:/startup/40-ansible.sh:ro

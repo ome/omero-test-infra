@@ -9,6 +9,15 @@
 
     - file:
         state: directory
+        path: /OMERO
+        owner: omero-server
+
+    - file:
+        state: absent
+        path: /opt/omero/server/OMERO.server/lib/scripts/omero
+
+    - file:
+        state: directory
         path: /tmp/idr/
 
     - get_url:
