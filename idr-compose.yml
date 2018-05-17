@@ -40,8 +40,16 @@ services:
     volumes:
       - ./idr/web/playbook.yml:/opt/setup/idr.yml:ro
       - ./idr/40-ansible.sh:/startup/40-ansible.sh
-  thumbnail:
-    build: idr/omero-ms-thumbnail
+  #thumbnail:
+  #  build: idr/omero-ms-thumbnail
+  mapr:
+    build: idr/omero-ms-mapr
+    command:
+      - /cfg
+    volumes:
+      - ./idr/omero-ms-mapr/cfg:/cfg:ro
+    ports:
+      - "8080:8080"
   nginx:
     #build: idr/nginx
     image: nginx
@@ -50,6 +58,9 @@ services:
       - ./idr/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./idr/40-ansible.sh:/startup/40-ansible.sh
     ports:
-       - '8080:8080'
+       # '8080:8080'
        - '8009:8009'
        - '9000:9000'
+       - '5000:5000'
+       - '5001:5001'
+       - '5002:5002'
