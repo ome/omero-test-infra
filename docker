@@ -13,6 +13,7 @@ export VERBOSE=${VERBOSE:-"set +x"}
 export PROJECT=${PROJECT:-$(get_project_name)}
 export NETWORK=${NETWORK:-"$PROJECT"_default}
 export TARGET=/$(basename $PWD)
+export NOCLEAN=${NOCLEAN:-"false"}
 
 if [ $# -eq 0 ]; then
     echo "docker [stage [stage [stage]]]"
@@ -30,6 +31,7 @@ if [ $# -eq 0 ]; then
     echo "  ACTION  - use 'echo' to perform a dry-run ($ACTION)"
     echo "  TRAVIS  - whether to print travis_folds ($TRAVIS)"
     echo "  VERBOSE - set to 'set -x' to see all actions ($VERBOSE)"
+    echo "  NOCLEAN - set to 'true' to prevent container cleanup"
     exit 2
 else
     STAGES="$@"
@@ -39,6 +41,12 @@ $VERBOSE
 
 start_up() {
     $ACTION .omero/compose up -d --force-recreate "$@"
+    if [ "$NOCLEAN" != "true" ]; then
+        clean_up() {
+            $ACTION .omero/compose down -v
+        }
+        trap clean_up EXIT
+    fi
 }
 
 ##
