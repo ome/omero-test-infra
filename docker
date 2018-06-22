@@ -129,7 +129,7 @@ java() {
 
 wait_on_login() {
     OMERO_HOST="-e OMERO_HOST=omero"
-    if [ $# -gt 0 ] && $1 == "--localhost" ]; then
+    if [ $# -gt 0 ] && [ $1 == "--localhost" ]; then
         OMERO_HOST=""
         shift
     fi
