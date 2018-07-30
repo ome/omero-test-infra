@@ -101,7 +101,7 @@ run() {
         if [ "$LOCAL" == true ]; then
             $ACTION $LOCALPREFIX/$ARGUMENT
         else
-            $ACTION docker exec $CALLAS -e TARGET=$TARGET -e OMERO_DIST=$OMERO_DIST $CID $PREFIX/$ARGUMENT
+            $ACTION docker exec $CALLAS -e TARGET=$TARGET -e PLUGIN=$PLUGIN -e OMERO_DIST=$OMERO_DIST $CID $PREFIX/$ARGUMENT
         fi
         fold end $file
     fi
