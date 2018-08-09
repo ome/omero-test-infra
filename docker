@@ -172,7 +172,7 @@ for STAGE in $STAGES; do
             start_up
             install
             wait_on_login
-            run py update
+            run py common
             run py check
             run py setup
             run --user cli build
@@ -203,7 +203,7 @@ for STAGE in $STAGES; do
             run scripts copy
             wait_on_login
             run --user test data || echo ignore
-            run py update
+            run py common
             run --user scripts build
             ;;
         srv)
