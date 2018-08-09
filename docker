@@ -173,6 +173,7 @@ for STAGE in $STAGES; do
             install
             wait_on_login
             run py update
+            run py check
             run py setup
             run --user cli build
             ;;
