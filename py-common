@@ -7,5 +7,5 @@ TARGET=${TARGET:-..}
 dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 cd $TARGET
 
-pip install --upgrade pip setuptools
+pip install --upgrade setuptools
 pip install -r $dir/requirements.txt
