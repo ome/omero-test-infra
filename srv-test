@@ -1,4 +1,3 @@
 #!/bin/bash
 cd /src
-echo 'IceSSL.Ciphers=ADH:@SECLEVEL=0' >> etc/ice.config
 components/tools/travis-build integration

@@ -46,7 +46,7 @@ time.sleep(SLEEP_TIME)
 # Second: try to login
 for x in range(1, 6):
     # https://trello.com/c/rPstbt4z/216-open-ssl-110
-    client = omero.client(OMERO_HOST, OMERO_PORT, ["--IceSSL.Ciphers=ADH:@SECLEVEL=0"])
+    client = omero.client(OMERO_HOST, OMERO_PORT)
     try:
         client.createSession(OMERO_USER, OMERO_PASS)
         break
