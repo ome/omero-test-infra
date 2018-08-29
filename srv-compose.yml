@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   db:
@@ -6,7 +6,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   omero:
-    build: ..
+    build:
+      context: ..
+      target: run
     environment:
       - ROOTPASS=${ROOTPASS}
       - CONFIG_omero_db_user=postgres
@@ -18,3 +20,9 @@ services:
     ports:
       - "${OMERO_SERVER_TCP}4063"
       - "${OMERO_SERVER_SSL}4064"
+  test:
+    build:
+      context: ..
+      target: build
+    stdin_open: true
+    tty: true
