@@ -45,6 +45,8 @@ recommended to use
 where NAME is `app`, `cli`, `lib` or `scripts`. The special `srv`
 command will build the parent directory as a replacement for the
 OMERO.server container.
+The `setup` command can be used to setup a server for testing external applications using your own scripts.
+For example, run `NOCLEAN=true OMERO_SERVER_SSL=4064: .omero/docker setup` and connect to `localhost:4064`.
 
 It is also possible to combine several application e.g.
 
