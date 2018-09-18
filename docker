@@ -214,6 +214,16 @@ for STAGE in $STAGES; do
             run py common
             run --user scripts build
             ;;
+        setup)
+            export COMPONENT=server
+            export USER=omero-server
+            export CID="$PROJECT"_omero_1
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
+            start_up
+            install
+            wait_on_login
+            run --user omero init
+            ;;
         srv)
             export COMPONENT=server
             export USER=omero-server
