@@ -89,7 +89,7 @@ run() {
         fold start $file
         if [ -e .omeroci/$file ]; then
             PREFIX=/$TARGET
-            LOCALPREFIX=""
+            LOCALPREFIX="."
             ARGUMENT=.omeroci/$file
         elif [ -e $(dirname "$0")/$file ]; then
             PREFIX=/infra
