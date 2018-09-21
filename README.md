@@ -8,6 +8,9 @@ Any repository that relies on an existing OMERO installation
 can depend on this directory whether for testing in travis
 or locally.
 
+The are a number of [examples](#examples) which are run
+regularly by Travis CI.
+
 Setup
 -----
 
@@ -115,3 +118,28 @@ for interacting with the services started by omero-test-infra:
    restores from these tar balls.
  * `download.sh` downloads and unpacks a zip file containing
    persisted tarballs.
+
+Examples
+--------
+
+ * Apps
+   - https://github.com/ome/omero-gallery
+   - https://github.com/ome/omero-figure
+   - https://github.com/ome/omero-fpbioimage
+   - https://github.com/ome/omero-iviewer
+   - https://github.com/ome/omero-mapr
+   - https://github.com/ome/omero-parade
+ * CLI
+   - https://github.com/ome/omero-cli-duplicate
+   - https://github.com/ome/omero-cli-render
+   - https://github.com/ome/omero-metadata
+ * Libraries
+   - https://github.com/ome/minimal-omero-client
+   - https://github.com/ome/omero-prometheus-tools/pull/4
+   - https://github.com/ome/rOMERO-gateway
+ * Scripts
+   - https://github.com/ome/scripts
+
+You can find more examples by searching for
+"[openmicroscopy/omero-test-infra filename:.travis.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3A.travis.yml&type=Code)"
+on GitHub.com.
