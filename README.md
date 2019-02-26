@@ -135,9 +135,10 @@ Update the plugin with local changes:
 ```
 .omero/docker dev install
 ```
-Run the linter and tests
+Run the linter, install, run tests
 ```
 .omero/docker dev run py check
+.omero/docker dev run py setup
 .omero/docker dev run --user cli build
 ```
 
