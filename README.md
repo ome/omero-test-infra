@@ -119,6 +119,33 @@ for interacting with the services started by omero-test-infra:
  * `download.sh` downloads and unpacks a zip file containing
    persisted tarballs.
 
+Developer mode
+--------------
+
+When developing a plugin it can be useful to run part of the OMERO-test-infra scripts instead of recreating the full docker infrastructure each time.
+A special `dev` command is available to modify an existing running server.
+Examine the [`docker`](docker) script for available commands.
+For example:
+
+Start the server with `NOCLEAN=true`:
+```
+NOCLEAN=true VERBOSE='set -x' .omero/docker
+```
+Update the plugin with local changes:
+```
+.omero/docker dev install
+```
+Run the linter and tests
+```
+.omero/docker dev run py check
+.omero/docker dev run --user cli build
+```
+
+You can also obtain a `bash` shell in the server:
+```
+.omero/docker dev sh
+```
+
 Examples
 --------
 
