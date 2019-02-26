@@ -129,7 +129,7 @@ For example:
 
 Start the server with `NOCLEAN=true`:
 ```
-NOCLEAN=true VERBOSE='set -x' .omero/docker
+NOCLEAN=true .omero/docker cli
 ```
 Update the plugin with local changes:
 ```
@@ -141,6 +141,8 @@ Run the linter, install, run tests
 .omero/docker dev run py setup
 .omero/docker dev run --user cli build
 ```
+Remember, you may need to set some environment variables to ensure your plugin is discovered and tested correctly.
+If you are modifying an existing plugin see `.travis.yml` for the required variables.
 
 You can also obtain a `bash` shell in the server:
 ```
