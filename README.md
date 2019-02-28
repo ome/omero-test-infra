@@ -122,7 +122,8 @@ for interacting with the services started by omero-test-infra:
 Developer mode
 --------------
 
-When developing a plugin it can be useful to run part of the OMERO-test-infra scripts instead of recreating the full docker infrastructure each time.
+When developing a plugin it can be useful to run part of the OMERO-test-infra
+scripts instead of recreating the full docker infrastructure each time.
 A special `dev` command is available to modify an existing running server.
 Examine the [`docker`](docker) script for available commands.
 For example:
@@ -141,7 +142,9 @@ Run the linter, install, run tests
 .omero/docker dev run py setup
 .omero/docker dev run --user cli build
 ```
-Remember, you may need to set some environment variables to ensure your plugin is discovered and tested correctly.
+Remember, you may need to set some environment variables to ensure your plugin
+is discovered and tested correctly.
+
 If you are modifying an existing plugin see `.travis.yml` for the required variables.
 
 You can also obtain a `bash` shell in the server:
