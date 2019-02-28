@@ -34,7 +34,14 @@ if [ $# -eq 0 ]; then
     echo "  VERBOSE - set to 'set -x' to see all actions ($VERBOSE)"
     echo "  NOCLEAN - set to 'true' to prevent container cleanup"
     echo "  PLUGIN  - name of the plugin (optional) ($PLUGIN)"
+    echo
+    echo "Development mode:"
+    echo "  dev ... - run an internal command with args"
+    echo "  dev sh  - start a shell inside the server container"
     exit 2
+elif [ "$1" = dev ]; then
+    STAGES=dev
+    shift
 else
     STAGES="$@"
 fi
@@ -138,6 +145,10 @@ wait_on_login() {
     $ACTION docker exec $OMERO_HOST $CID /infra/wait-on-login
 }
 
+sh() {
+    $ACTION docker exec -it $CID bash
+}
+
 ##
 ## RUN STAGES
 ##
@@ -233,6 +244,14 @@ for STAGE in $STAGES; do
             export OMERO_DIST="/src/dist"
             install --nosrc
             run --user srv test
+            ;;
+
+        dev)
+            export COMPONENT=server
+            export USER=omero-server
+            export CID="$PROJECT"_omero_1
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
+            "$@"
             ;;
         *)
             echo "Unknown stage: $STAGE"
