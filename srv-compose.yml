@@ -9,6 +9,8 @@ services:
     build:
       context: ..
       target: run
+      args:
+        - BUILD_IMAGE
     environment:
       - ROOTPASS=${ROOTPASS}
       - CONFIG_omero_db_user=postgres
@@ -24,5 +26,7 @@ services:
     build:
       context: ..
       target: build
+      args:
+        - BUILD_IMAGE
     stdin_open: true
     tty: true

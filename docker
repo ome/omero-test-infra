@@ -238,7 +238,7 @@ for STAGE in $STAGES; do
             wait_on_login --localhost
 
             # Now that the server is running, test it
-            export USER=omero
+            export USER=1000
             export CID="$PROJECT"_test_1
             export TARGET="/src"
             export OMERO_DIST="/src/dist"
