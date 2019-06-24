@@ -53,7 +53,7 @@ start_up() {
     $ACTION .omero/compose up -d --force-recreate "$@"
     if [ "$NOCLEAN" != "true" ]; then
         clean_up() {
-            if [ "$LOGS" != "true" ]; then
+            if [ "$LOGS" == "true" ]; then
                 $ACTION .omero/compose logs
             fi
             $ACTION .omero/compose down -v
