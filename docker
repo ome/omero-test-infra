@@ -14,6 +14,7 @@ export PROJECT=${PROJECT:-$(get_project_name)}
 export NETWORK=${NETWORK:-"$PROJECT"_default}
 export TARGET=/$(basename $PWD)
 export NOCLEAN=${NOCLEAN:-"false"}
+export LOGS=${LOGS:-"false"}
 export PLUGIN=${PLUGIN:-}
 
 if [ $# -eq 0 ]; then
