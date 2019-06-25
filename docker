@@ -33,6 +33,7 @@ if [ $# -eq 0 ]; then
     echo "  TRAVIS  - whether to print travis_folds ($TRAVIS)"
     echo "  VERBOSE - set to 'set -x' to see all actions ($VERBOSE)"
     echo "  NOCLEAN - set to 'true' to prevent container cleanup"
+    echo "  LOGS    - set to 'true' to print logs on cleanup"
     echo "  PLUGIN  - name of the plugin (optional) ($PLUGIN)"
     echo
     echo "Development mode:"
@@ -52,6 +53,9 @@ start_up() {
     $ACTION .omero/compose up -d --force-recreate "$@"
     if [ "$NOCLEAN" != "true" ]; then
         clean_up() {
+            if [ "$LOGS" == "true" ]; then
+                $ACTION .omero/compose logs
+            fi
             $ACTION .omero/compose down -v
         }
         trap clean_up EXIT
