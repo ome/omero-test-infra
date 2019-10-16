@@ -51,8 +51,9 @@ fi
 $VERBOSE
 
 start_up() {
-    $ACTION .omero/compose up -d --force-recreate "$@"
-    if [ "$NOCLEAN" != "true" ]; then
+    if "$NOCLEAN" in true 1; then
+        echo "Keeping servers running"
+    else
         clean_up() {
             if [ "$LOGS" == "true" ]; then
                 $ACTION .omero/compose logs
@@ -61,6 +62,7 @@ start_up() {
         }
         trap clean_up EXIT
     fi
+    $ACTION .omero/compose up -d --force-recreate "$@"
 }
 
 ##
@@ -262,6 +264,7 @@ for STAGE in $STAGES; do
             export USER=omero-server
             export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
+            export NOCLEAN=true
             "$@"
             ;;
         *)
