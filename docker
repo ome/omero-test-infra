@@ -154,6 +154,12 @@ sh() {
     $ACTION docker exec -it $CID bash
 }
 
+get_cid(){
+    docker ps -q \
+        --filter label=com.docker.compose.project=${PROJECT} \
+        --filter label=com.docker.compose.service=$1
+}
+
 ##
 ## RUN STAGES
 ##
@@ -164,7 +170,7 @@ for STAGE in $STAGES; do
         app)
             export COMPONENT=web
             export USER=omero-web
-            export CID="$PROJECT"_web_1
+            export CID=$(get_cid web)
             export OMERO_DIST="/opt/omero/web/OMERO.web"
             start_up
             install
@@ -176,7 +182,7 @@ for STAGE in $STAGES; do
             # need to be formalized later.
             (
                 USER=omero-server
-                CID="${PROJECT}_omero_1"
+                CID=$(get_cid omero)
                 OMERO_DIST="/opt/omero/server/OMERO.server"
                 install
                 run app srv || echo ignore
@@ -191,7 +197,7 @@ for STAGE in $STAGES; do
         cli)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_omero_1
+            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
             install
@@ -204,7 +210,7 @@ for STAGE in $STAGES; do
         lib)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_omero_1
+            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
             install
@@ -216,7 +222,7 @@ for STAGE in $STAGES; do
         scripts)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_omero_1
+            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
             install
@@ -233,7 +239,7 @@ for STAGE in $STAGES; do
         srv)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_omero_1
+            export CID=$(get_cid omero)
             export COMPOSE_FILE=${COMPOSE_FILE:-"srv-compose.yml"}
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             export TARGET=/src
@@ -244,7 +250,7 @@ for STAGE in $STAGES; do
 
             # Now that the server is running, test it
             export USER=1000
-            export CID="$PROJECT"_test_1
+            export CID=$(get_cid test)
             export TARGET="/src"
             export OMERO_DIST="/src/dist"
             install --nosrc
@@ -254,7 +260,7 @@ for STAGE in $STAGES; do
         dev)
             export COMPONENT=server
             export USER=omero-server
-            export CID="$PROJECT"_omero_1
+            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             "$@"
             ;;
