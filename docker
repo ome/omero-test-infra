@@ -93,7 +93,7 @@ run() {
     type=$1
     name=$2
     file="$1-$2"
-    var="${CID}_$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
+    var="DONE_${CID}_$(echo $1| tr /a-z/ /A-Z/)_$(echo $2 | tr /a-z/ /A-Z/)"
     eval "$var=\${$var:-0}"
 
     if [ "${!var}" == "1" ]; then
