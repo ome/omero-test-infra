@@ -172,9 +172,9 @@ for STAGE in $STAGES; do
         app)
             export COMPONENT=web
             export USER=omero-web
-            export CID=$(get_cid web)
             export OMERO_DIST="/opt/omero/web/OMERO.web"
             start_up
+            export CID=$(get_cid web)
             install
             java
             run app deps || echo ignore
@@ -199,9 +199,9 @@ for STAGE in $STAGES; do
         cli)
             export COMPONENT=server
             export USER=omero-server
-            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
+            export CID=$(get_cid omero)
             install
             wait_on_login
             run py common
@@ -212,9 +212,9 @@ for STAGE in $STAGES; do
         lib)
             export COMPONENT=server
             export USER=omero-server
-            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
+            export CID=$(get_cid omero)
             install
             run --local lib build
             wait_on_login
@@ -224,9 +224,9 @@ for STAGE in $STAGES; do
         scripts)
             export COMPONENT=server
             export USER=omero-server
-            export CID=$(get_cid omero)
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             start_up
+            export CID=$(get_cid omero)
             install
             run scripts deps || echo ignore
             run py common
@@ -241,11 +241,11 @@ for STAGE in $STAGES; do
         srv)
             export COMPONENT=server
             export USER=omero-server
-            export CID=$(get_cid omero)
             export COMPOSE_FILE=${COMPOSE_FILE:-"srv-compose.yml"}
             export OMERO_DIST="/opt/omero/server/OMERO.server"
             export TARGET=/src
             start_up
+            export CID=$(get_cid omero)
             install --nosrc
             run py common
             wait_on_login --localhost
