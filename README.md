@@ -128,10 +128,16 @@ A special `dev` command is available to modify an existing running server.
 Examine the [`docker`](docker) script for available commands.
 For example:
 
-Start the server with `NOCLEAN=true`:
+Start a particular server with `NOCLEAN=true`:
 ```
 NOCLEAN=true .omero/docker cli
 ```
+
+or start an independent server:
+```
+.omero/docker dev start_up
+```
+
 Update the plugin with local changes:
 ```
 .omero/docker dev install
