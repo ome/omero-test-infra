@@ -7,6 +7,10 @@ set -u
 ##
 
 . .omero/utils
+if [ -f .omeroci/env ]; then
+    . .omeroci/env
+fi
+
 export ACTION=${ACTION:-""}
 export TRAVIS=${TRAVIS:-"false"}
 export VERBOSE=${VERBOSE:-"set +x"}
