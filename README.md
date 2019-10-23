@@ -85,6 +85,9 @@ overridden by placing an executable file of the same name in an
  * `py-common` runs standard Python package build steps
  * `py-setup` builds and install the Python package
 
+You can also define a custom environment:
+* `env` will be sourced before any commands are run
+
 ### Environment variables ###
 
 The .env defines a number of variables that can optionally be passed
