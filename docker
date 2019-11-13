@@ -201,7 +201,7 @@ for STAGE in $STAGES; do
             run py common
             run py check
             run py setup
-            run --user app config
+            run app config
             run --user app build
             ;;
         cli)

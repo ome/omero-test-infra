@@ -9,5 +9,4 @@ cd $TARGET
 # format the name of the app
 value="[\""$(get_app_name)"\"]"
 
-source /opt/omero/web/venv/bin/activate
-$OMERO_DIST/bin/omero config set omero.web.apps $value
+su - omero-web -c "/opt/omero/web/venv3/bin/omero config set omero.web.apps $value"
