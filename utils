@@ -24,5 +24,7 @@ get_project_name() {
 }
 
 if [[ -v VIRTUAL_ENV ]]; then
-    source $VIRTUAL_ENV/bin/activate
+    # see https://github.com/pypa/virtualenv/issues/1029
+    PS=${PS:-}
+    VIRTUAL_ENV_DISABLE_PROMPT=true source $VIRTUAL_ENV/bin/activate
 fi
