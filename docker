@@ -127,7 +127,11 @@ run() {
         if [ "$LOCAL" == true ]; then
             $ACTION $LOCALPREFIX/$ARGUMENT
         else
-            $ACTION docker exec $CALLAS -e TARGET=$TARGET -e PLUGIN=$PLUGIN -e OMERO_DIST=$OMERO_DIST $CID $PREFIX/$ARGUMENT
+            $ACTION docker exec $CALLAS \
+                -e TARGET=$TARGET -e PLUGIN=$PLUGIN \
+                -e OMERO_DIST=$OMERO_DIST \
+                -e VIRTUAL_ENV=/opt/omero/$COMPONENT/venv3 \
+                $CID $PREFIX/$ARGUMENT
         fi
         fold end $file
     fi
@@ -153,7 +157,7 @@ wait_on_login() {
         OMERO_HOST=""
         shift
     fi
-    $ACTION docker exec $OMERO_HOST $CID /infra/wait-on-login
+    $ACTION docker exec $OMERO_HOST $CID /opt/omero/$COMPONENT/venv3/bin/python /infra/wait-on-login
 }
 
 sh() {

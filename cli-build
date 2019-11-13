@@ -1,4 +1,5 @@
 #!/bin/bash
+source /infra/utils
 
 set -e
 set -u
@@ -11,6 +12,6 @@ GUESS=${PWD#*omero-cli-*}
 PLUGIN=${PLUGIN:-$GUESS}
 
 export OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
-$OMERO_DIST/bin/omero $PLUGIN -h
+omero $PLUGIN -h
 
 python setup.py test -t test -i ${OMERO_DIST}/etc/ice.config -vs

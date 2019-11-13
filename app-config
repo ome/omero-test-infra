@@ -1,8 +1,8 @@
 #!/bin/bash
+source /infra/utils
+
 set -e
 set +u
-
-source /infra/utils
 
 cd $TARGET
 
