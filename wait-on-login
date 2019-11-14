@@ -19,11 +19,11 @@ SLEEP_TIME = int(os.environ.get("SLEEP_TIME", "30"))
 
 
 def end():
-    print "travis_fold:end:wait-on-login"
+    print("travis_fold:end:wait-on-login")
 
 atexit.register(end)
 
-print "travis_fold:start:wait-on-login"
+print("travis_fold:start:wait-on-login")
 
 
 def port_is_open():
@@ -36,11 +36,11 @@ for x in range(1, 31):
         break
     else:
         time.sleep(1.0)
-        print "waiting on port: #%s" % x
+        print("waiting on port: #%s" % x)
 
 
 # HACK: This 'ready' detection is still not working. Adding a hard sleep to be safe.
-print "Sleeping for", SLEEP_TIME
+print("Sleeping for", SLEEP_TIME)
 time.sleep(SLEEP_TIME)
 
 # Second: try to login
@@ -51,7 +51,7 @@ for x in range(1, 6):
         client.createSession(OMERO_USER, OMERO_PASS)
         break
     except:
-        print "Login attempt %s failed. Trying again in %s seconds" % (x, x+1)
+        print("Login attempt %s failed. Trying again in %s seconds" % (x, x+1))
         time.sleep(x+1)
     finally:
         client.__del__()

@@ -127,7 +127,11 @@ run() {
         if [ "$LOCAL" == true ]; then
             $ACTION $LOCALPREFIX/$ARGUMENT
         else
-            $ACTION docker exec $CALLAS -e TARGET=$TARGET -e PLUGIN=$PLUGIN -e OMERO_DIST=$OMERO_DIST $CID $PREFIX/$ARGUMENT
+            $ACTION docker exec $CALLAS \
+                -e TARGET=$TARGET -e PLUGIN=$PLUGIN \
+                -e OMERO_DIST=$OMERO_DIST \
+                -e VIRTUAL_ENV=/opt/omero/$COMPONENT/venv3 \
+                $CID $PREFIX/$ARGUMENT
         fi
         fold end $file
     fi
@@ -143,8 +147,10 @@ install() {
 }
 
 java() {
-    $ACTION docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/omego/bin/omego download java --sym /opt/omero/java
-    $ACTION docker exec $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
+    $ACTION docker exec -e USER_AGENT=Travis -u root $CID mkdir -p /opt/omero/$COMPONENT/OMERO.$COMPONENT/lib # Web!
+    $ACTION docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/$COMPONENT/venv3/bin/pip install omego
+    $ACTION docker exec -e USER_AGENT=Travis -u root $CID /opt/omero/$COMPONENT/venv3/bin/omego download java --sym /opt/omero/java
+    $ACTION docker exec -u root $CID ln -s /opt/omero/java/libs /opt/omero/web/OMERO.web/lib/client
 }
 
 wait_on_login() {
@@ -153,7 +159,7 @@ wait_on_login() {
         OMERO_HOST=""
         shift
     fi
-    $ACTION docker exec $OMERO_HOST $CID /infra/wait-on-login
+    $ACTION docker exec $OMERO_HOST $CID /opt/omero/$COMPONENT/venv3/bin/python /infra/wait-on-login
 }
 
 sh() {
@@ -197,7 +203,7 @@ for STAGE in $STAGES; do
             run py common
             run py check
             run py setup
-            run --user app config
+            run app config
             run --user app build
             ;;
         cli)
