@@ -84,6 +84,8 @@ overridden by placing an executable file of the same name in an
  * `py-check` runs standard Python quality tools
  * `py-common` runs standard Python package build steps
  * `py-setup` builds and install the Python package
+ * `app-config` configures the app
+ * `app-build` finally builds app and runs integration tests
 
 You can also define a custom environment:
 * `env` will be sourced before any commands are run
