@@ -23,7 +23,7 @@ get_project_name() {
    echo $(get_app_name | tr -cd '[[:alnum:]]' | tr /A-Z/ /a-z/)
 }
 
-if [[ -v VIRTUAL_ENV ]]; then
+if [ ! -z ${VIRTUAL_ENV:-} ]; then
     # see https://github.com/pypa/virtualenv/issues/1029
     PS=${PS:-}
     VIRTUAL_ENV_DISABLE_PROMPT=true source $VIRTUAL_ENV/bin/activate
