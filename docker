@@ -193,9 +193,10 @@ for STAGE in $STAGES; do
             # the docker container. This may
             # need to be formalized later.
             (
+                COMPONENT=server
                 USER=omero-server
-                CID=$(get_cid omero)
                 OMERO_DIST="/opt/omero/server/OMERO.server"
+                CID=$(get_cid omero)
                 install
                 run app srv || echo ignore
             )
