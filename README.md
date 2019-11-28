@@ -158,9 +158,22 @@ is discovered and tested correctly.
 
 If you are modifying an existing plugin see `.travis.yml` for the required variables.
 
+Trouble-shooting
+----------------
+
 You can also obtain a `bash` shell in the server:
 ```
 .omero/docker dev sh
+```
+
+If you run with: 
+```
+NOCLEAN=true .omero/docker app
+```
+then you can inspect the docker containers.
+For example:
+```
+.omero/compose exec web bash
 ```
 
 Examples
