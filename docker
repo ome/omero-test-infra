@@ -258,7 +258,6 @@ for STAGE in $STAGES; do
             start_up
             export CID=$(get_cid omero)
             install --nosrc
-            run py common
             wait_on_login --localhost
 
             # Now that the server is running, test it
