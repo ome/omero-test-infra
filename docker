@@ -130,6 +130,7 @@ run() {
             $ACTION docker exec $CALLAS \
                 -e TARGET=$TARGET -e PLUGIN=$PLUGIN \
                 -e OMERO_DIST=$OMERO_DIST \
+                -e OMERODIR=$OMERO_DIST \
                 -e VIRTUAL_ENV=/opt/omero/$COMPONENT/venv3 \
                 $CID $PREFIX/$ARGUMENT
         fi
