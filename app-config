@@ -6,7 +6,7 @@ set +u
 
 cd $TARGET
 
-# format the name of the app
-value="[\""$(get_app_name)"\"]"
+# add the app to omero.web.apps
+value=$(get_app_name)
 
-su - omero-web -c "env OMERODIR=$OMERODIR /opt/omero/web/venv3/bin/omero config set omero.web.apps $value"
+su - omero-web -c "env OMERODIR=$OMERODIR /opt/omero/web/venv3/bin/omero config set omero.web.apps '[\"$value\"]'"
