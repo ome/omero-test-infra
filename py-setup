@@ -11,6 +11,7 @@ PLUGIN=${PLUGIN:-}
 cd $TARGET
 cd $(setup_dir)
 python setup.py sdist
-pip install -U dist/*.tar.gz
+python setup.py bdist_wheel
+pip install -U dist/*.whl
 python setup.py clean
 rm -rf dist *egg-info src/*egg-info
