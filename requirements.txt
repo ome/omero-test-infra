@@ -1,5 +1,6 @@
 flake8<3.6.0
 pep8-naming
+pre-commit
 pycodestyle<2.4.0
 restructuredtext_lint
 pytest==3.3.2

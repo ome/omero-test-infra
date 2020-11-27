@@ -8,5 +8,9 @@ set -x
 TARGET=${TARGET:-..}
 
 cd $TARGET
-flake8 -v .
+if [ -f .pre-commit-config.yaml ]; then
+    pre-commit run -a
+else
+    flake8 -v .
+fi
 rst-lint README.rst
