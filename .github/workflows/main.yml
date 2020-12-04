@@ -1,0 +1,35 @@
+# Builds using ansible
+---
+name: Build
+
+on: 
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      compose_file:docker-compose.yml:volumes.yml
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Add variable
+        run: |
+          run: echo "${{ env.compose_file }}" >> $GITHUB_PATH
+      - name: Set up
+        run: |
+          mkdir /tmp/omero-app
+          cp -r . /tmp/omero-app/.omero
+      - name: Build
+        run: |
+          cd /tmp/omero-app
+          .omero/compose up -d
+          .omero/compose down
+          .omero/persist.sh backup
+          .omero/persist.sh --restore backup
