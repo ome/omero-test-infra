@@ -11,8 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      compose_file:docker-compose.yml:volumes.yml
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
@@ -21,7 +19,8 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Add variable
         run: |
-          run: echo "${{ env.compose_file }}" >> $GITHUB_PATH
+          run: |
+            echo "COMPOSE_FILE=docker-compose.yml:volumes.yml" >> $GITHUB_PATH
       - name: Set up
         run: |
           mkdir /tmp/omero-app
