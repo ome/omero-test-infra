@@ -5,11 +5,11 @@ OMERO Test Infra
 for projects that are built on OMERO.server or OMERO.web.
 
 Any repository that relies on an existing OMERO installation
-can depend on this directory whether for testing in travis
+can depend on this directory whether for testing in CI system
 or locally.
 
 The are a number of [examples](#examples) which are run
-regularly by Travis CI.
+regularly by CI.
 
 Setup
 -----
@@ -56,7 +56,7 @@ It is also possible to combine several application e.g.
 but each of the applications must pass when it is run alone as well.
 
 These commands should be invoked by the `script` step in the project's
-.travis.yml file. Set any environment variables as necessary.
+.omero_plugin.yml file. Set any environment variables as necessary.
 
 Extension mechanisms
 --------------------
@@ -156,7 +156,7 @@ Run the linter, install, run tests
 Remember, you may need to set some environment variables to ensure your plugin
 is discovered and tested correctly.
 
-If you are modifying an existing plugin see `.travis.yml` for the required variables.
+If you are modifying an existing plugin see `.omero_plugin.yml` for the required variables.
 
 Trouble-shooting
 ----------------
@@ -198,5 +198,5 @@ Examples
    - https://github.com/ome/scripts
 
 You can find more examples by searching for
-"[openmicroscopy/omero-test-infra filename:.travis.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3A.travis.yml&type=Code)"
+"[ome/omero-test-infra filename:.omero_plugin.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3A.omero_plugin.yml&type=Code)"
 on GitHub.com.
