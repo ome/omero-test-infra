@@ -1,4 +1,4 @@
-# Builds using ansible
+# Builds using docker
 ---
 name: Build
 
