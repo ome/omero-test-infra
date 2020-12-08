@@ -1,6 +1,8 @@
 OMERO Test Infra
 ================
 
+[![Actions Status](https://github.com/ome/omero-test-infra/workflows/Build/badge.svg)](https://github.com/ome/omero-test-infra/actions)
+
 `omero-test-infra` provides simplified integration testing
 for projects that are built on OMERO.server or OMERO.web.
 
