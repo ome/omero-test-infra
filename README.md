@@ -156,7 +156,7 @@ Run the linter, install, run tests
 Remember, you may need to set some environment variables to ensure your plugin
 is discovered and tested correctly.
 
-If you are modifying an existing plugin see `.omero_plugin.yml` for the required variables.
+If you are modifying an existing plugin see `main.yml` for the required variables.
 
 Trouble-shooting
 ----------------
@@ -198,5 +198,5 @@ Examples
    - https://github.com/ome/scripts
 
 You can find more examples by searching for
-"[ome/omero-test-infra filename:.omero_plugin.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3A.omero_plugin.yml&type=Code)"
+"[ome/omero-test-infra filename:omero_plugin.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3Aomero_plugin.yml&type=Code)"
 on GitHub.com.
