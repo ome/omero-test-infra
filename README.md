@@ -1,20 +1,22 @@
 OMERO Test Infra
 ================
 
+[![Actions Status](https://github.com/ome/omero-test-infra/workflows/Build/badge.svg)](https://github.com/ome/omero-test-infra/actions)
+
 `omero-test-infra` provides simplified integration testing
 for projects that are built on OMERO.server or OMERO.web.
 
 Any repository that relies on an existing OMERO installation
-can depend on this directory whether for testing in travis
+can depend on this directory whether for testing in CI system
 or locally.
 
 The are a number of [examples](#examples) which are run
-regularly by Travis CI.
+regularly by CI.
 
 Setup
 -----
 
-The directory MUST BE located at .omero at the top-level of
+The directory MUST BE located at `.omero` at the top-level of
 your source code. This can be achieved most simply by:
 
 ```
@@ -33,9 +35,9 @@ production docker images. The definition of the stack is available
 in `docker-compose.yml` with a number of environment variables
 being specified in `.env`.
 
-All docker compose environment variables like COMPOSE_FILE will be
-respected, except for COMPOSE_PROJECT_NAME which has special handling
-via the PROJECT environment variable.
+All docker compose environment variables like `COMPOSE_FILE` will be
+respected, except for `COMPOSE_PROJECT_NAME` which has special handling
+via the `PROJECT` environment variable.
 
 Docker commands
 ---------------
@@ -56,7 +58,7 @@ It is also possible to combine several application e.g.
 but each of the applications must pass when it is run alone as well.
 
 These commands should be invoked by the `script` step in the project's
-.travis.yml file. Set any environment variables as necessary.
+`omero_plugin.yml` file. Set any environment variables as necessary.
 
 Extension mechanisms
 --------------------
@@ -154,9 +156,7 @@ Run the linter, install, run tests
 .omero/docker dev run --user cli build
 ```
 Remember, you may need to set some environment variables to ensure your plugin
-is discovered and tested correctly.
-
-If you are modifying an existing plugin see `.travis.yml` for the required variables.
+is discovered and tested correctly. See `docker`.
 
 Trouble-shooting
 ----------------
@@ -198,5 +198,5 @@ Examples
    - https://github.com/ome/scripts
 
 You can find more examples by searching for
-"[openmicroscopy/omero-test-infra filename:.travis.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3A.travis.yml&type=Code)"
+"[ome/omero-test-infra filename:omero_plugin.yml](https://github.com/search?q=ome%2Fomero-test-infra+filename%3Aomero_plugin.yml&type=Code)"
 on GitHub.com.
