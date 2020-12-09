@@ -200,5 +200,5 @@ Examples
    - https://github.com/ome/scripts
 
 You can find more examples by searching for
-"[ome/omero-test-infra filename:omero_plugin.yml](https://github.com/search?q=openmicroscopy%2Fomero-test-infra+filename%3Aomero_plugin.yml&type=Code)"
+"[ome/omero-test-infra filename:omero_plugin.yml](https://github.com/search?q=ome%2Fomero-test-infra+filename%3Aomero_plugin.yml&type=Code)"
 on GitHub.com.
