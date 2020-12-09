@@ -58,7 +58,7 @@ It is also possible to combine several application e.g.
 but each of the applications must pass when it is run alone as well.
 
 These commands should be invoked by the `script` step in the project's
-.omero_plugin.yml file. Set any environment variables as necessary.
+omero_plugin.yml file. Set any environment variables as necessary.
 
 Extension mechanisms
 --------------------
