@@ -16,7 +16,7 @@ regularly by CI.
 Setup
 -----
 
-The directory MUST BE located at .omero at the top-level of
+The directory MUST BE located at `.omero` at the top-level of
 your source code. This can be achieved most simply by:
 
 ```
@@ -35,9 +35,9 @@ production docker images. The definition of the stack is available
 in `docker-compose.yml` with a number of environment variables
 being specified in `.env`.
 
-All docker compose environment variables like COMPOSE_FILE will be
-respected, except for COMPOSE_PROJECT_NAME which has special handling
-via the PROJECT environment variable.
+All docker compose environment variables like `COMPOSE_FILE` will be
+respected, except for `COMPOSE_PROJECT_NAME` which has special handling
+via the `PROJECT` environment variable.
 
 Docker commands
 ---------------
@@ -58,7 +58,7 @@ It is also possible to combine several application e.g.
 but each of the applications must pass when it is run alone as well.
 
 These commands should be invoked by the `script` step in the project's
-omero_plugin.yml file. Set any environment variables as necessary.
+`omero_plugin.yml` file. Set any environment variables as necessary.
 
 Extension mechanisms
 --------------------
@@ -156,9 +156,7 @@ Run the linter, install, run tests
 .omero/docker dev run --user cli build
 ```
 Remember, you may need to set some environment variables to ensure your plugin
-is discovered and tested correctly.
-
-If you are modifying an existing plugin see `main.yml` for the required variables.
+is discovered and tested correctly. See `docker`.
 
 Trouble-shooting
 ----------------
