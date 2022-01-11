@@ -20,7 +20,7 @@ The directory MUST BE located at `.omero` at the top-level of
 your source code. This can be achieved most simply by:
 
 ```
-git clone git://github.com/openmicroscopy/omero-test-infra .omero
+git clone https://github.com/openmicroscopy/omero-test-infra .omero
 ```
 
 but adding the repository as a submodule or downloading a
