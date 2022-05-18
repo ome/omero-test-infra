@@ -24,15 +24,15 @@ function backup_volume {
   volume_name=$1
   backup_destination=$2
   echo "Backup $volume_name to $backup_destination"
-  docker run --rm -v $volume_name:/data -v $backup_destination:/backup ubuntu tar -zcf /backup/$volume_name.tar /data
+  MSYS_NO_PATHCONV=1 docker run --rm -v $volume_name:/data -v $backup_destination:/backup ubuntu tar -zcf /backup/$volume_name.tar /data
 }
 
 function restore_volume {
   volume_name=$1
   backup_destination=$2
   echo "Restore $volume_name from $backup_destination"
-  docker run --rm -v $volume_name:/data ubuntu find /data -mindepth 1 -delete
-  docker run --rm -v $volume_name:/data -v $backup_destination:/backup ubuntu tar -xf /backup/$volume_name.tar -C .
+  MSYS_NO_PATHCONV=1 docker run --rm -v $volume_name:/data ubuntu find /data -mindepth 1 -delete
+  MSYS_NO_PATHCONV=1 docker run --rm -v $volume_name:/data -v $backup_destination:/backup ubuntu tar -xf /backup/$volume_name.tar -C .
 }
 
 function main {
