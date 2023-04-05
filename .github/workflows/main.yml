@@ -10,6 +10,9 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        python: [3.8]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
