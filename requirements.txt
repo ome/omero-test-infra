@@ -5,7 +5,7 @@ pre-commit
 pycodestyle
 restructuredtext_lint
 pytest
-attrs
+attrs==19.1.0
 restview
 mox
 # TODO: Apps only
