@@ -2,10 +2,10 @@ flake8
 pyflakes
 pep8-naming
 pre-commit
-pycodestyle<2.4.0
+pycodestyle
 restructuredtext_lint
-pytest==3.3.2
-attrs==19.1.0
+pytest
+attrs
 restview
 mox
 # TODO: Apps only
