@@ -4,7 +4,7 @@ pep8-naming
 pre-commit
 pycodestyle
 restructuredtext_lint
-pytest
+pytest<5
 attrs
 restview
 mox
