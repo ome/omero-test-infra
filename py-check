@@ -15,4 +15,9 @@ if [ -f .pre-commit-config.yaml ]; then
 else
     flake8 -v .
 fi
-rst-lint README.rst
+# Check if there is an README.rst
+if [ -f README.rst ]; then
+    rst-lint README.rst
+else
+    rst-lint README.md
+fi
