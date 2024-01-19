@@ -8,5 +8,8 @@ PROJECT=${PROJECT:-$(get_project_name)}
 # Note: for backwards compatibility, we're not yet
 # making use of COMPOSE_PROJECT_NAME
 
+if [ -e .omeroci/docker-compose.yml ]; then
+	cp -f .omeroci/docker-compose.yml $dir
+fi
 cd $dir
 exec docker compose -p ${PROJECT} "$@"
