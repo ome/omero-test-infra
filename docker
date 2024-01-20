@@ -21,6 +21,7 @@ export TARGET=/$(basename $PWD)
 export NOCLEAN=${NOCLEAN:-"false"}
 export LOGS=${LOGS:-"false"}
 export PLUGIN=${PLUGIN:-}
+export POLICY_BINARY_ACCESS=${POLICY_BINARY_ACCESS:-+read,+write,+image}
 
 if [ $# -eq 0 ]; then
     echo "docker [stage [stage [stage]]]"
@@ -67,7 +68,7 @@ start_up() {
         }
         trap clean_up EXIT
     fi
-    $ACTION .omero/compose up -d --force-recreate "$@"
+    $POLICY_BINARY_ACCESS $ACTION .omero/compose up -d --force-recreate "$@"
 }
 
 ##
