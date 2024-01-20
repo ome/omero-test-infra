@@ -5,11 +5,17 @@ dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 . ${dir}/utils
 PROJECT=${PROJECT:-$(get_project_name)}
+POLICY_BINARY_ACCESS=${POLICY_BINARY_ACCESS:-+read,+write,+image}
 # Note: for backwards compatibility, we're not yet
 # making use of COMPOSE_PROJECT_NAME
 
-if [ -e .omeroci/docker-compose.yml ]; then
-	cp -f .omeroci/docker-compose.yml $dir
-fi
 cd $dir
+line_number=$(sed -n '/OMERO_POLICY_BINARY_ACCESS/=' .env)
+
+if [ $line_number > 0 ] ; then
+  echo $line_number
+else
+  echo "OMERO_POLICY_BINARY_ACCESS="$POLICY_BINARY_ACCESS >> .env
+fi 
+
 exec docker compose -p ${PROJECT} "$@"
