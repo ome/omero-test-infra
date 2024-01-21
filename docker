@@ -68,7 +68,7 @@ start_up() {
         }
         trap clean_up EXIT
     fi
-    $POLICY_BINARY_ACCESS $ACTION .omero/compose up -d --force-recreate "$@"
+    $ACTION .omero/compose up -d --force-recreate "$@"
 }
 
 ##
