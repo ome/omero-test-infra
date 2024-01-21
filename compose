@@ -10,12 +10,8 @@ POLICY_BINARY_ACCESS=${POLICY_BINARY_ACCESS:-+read,+write,+image}
 # making use of COMPOSE_PROJECT_NAME
 
 cd $dir
-line_number=$(sed -n '/OMERO_POLICY_BINARY_ACCESS/=' .env)
 
-if [ $line_number > 0 ] ; then
-  echo $line_number
-else
-  echo "OMERO_POLICY_BINARY_ACCESS="$POLICY_BINARY_ACCESS >> .env
-fi 
+sed -i -e "/OMERO_POLICY_BINARY_ACCESS/d" .env
+echo "OMERO_POLICY_BINARY_ACCESS="$POLICY_BINARY_ACCESS >> .env
 
 exec docker compose -p ${PROJECT} "$@"
