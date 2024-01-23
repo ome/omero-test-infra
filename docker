@@ -21,6 +21,7 @@ export TARGET=/$(basename $PWD)
 export NOCLEAN=${NOCLEAN:-"false"}
 export LOGS=${LOGS:-"false"}
 export PLUGIN=${PLUGIN:-}
+export POLICY_BINARY_ACCESS=${POLICY_BINARY_ACCESS:-+read,+write,+image}
 
 if [ $# -eq 0 ]; then
     echo "docker [stage [stage [stage]]]"

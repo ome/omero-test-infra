@@ -5,8 +5,13 @@ dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 . ${dir}/utils
 PROJECT=${PROJECT:-$(get_project_name)}
+POLICY_BINARY_ACCESS=${POLICY_BINARY_ACCESS:-+read,+write,+image}
 # Note: for backwards compatibility, we're not yet
 # making use of COMPOSE_PROJECT_NAME
 
 cd $dir
+
+sed -i -e "/OMERO_POLICY_BINARY_ACCESS/d" .env
+echo "OMERO_POLICY_BINARY_ACCESS="$POLICY_BINARY_ACCESS >> .env
+
 exec docker compose -p ${PROJECT} "$@"

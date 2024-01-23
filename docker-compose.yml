@@ -16,6 +16,7 @@ services:
       - CONFIG_omero_db_name=postgres
       - CONFIG_omero_db_pass=${POSTGRES_PASSWORD}
       - CONFIG_omero_upgrades_url=
+      - CONFIG_omero_policy_binary__access=${OMERO_POLICY_BINARY_ACCESS}
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_SERVER_TCP}4063"
