@@ -8,4 +8,5 @@ set -x
 
 cd $TARGET
 
-python setup.py test -t test -i ${OMERO_DIST}/etc/ice.config -v
+export ICE_CONFIG=${OMERO_DIST}/etc/ice.config
+pytest -v
