@@ -14,4 +14,5 @@ PLUGIN=${PLUGIN:-$GUESS}
 export OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
 omero $PLUGIN -h
 
-python setup.py test -t test -i ${OMERO_DIST}/etc/ice.config -vs
+export ICE_CONFIG=${OMERO_DIST}/etc/ice.config
+pytest -v

@@ -4,10 +4,9 @@ pep8-naming
 pre-commit
 pycodestyle
 restructuredtext_lint
-pytest<5
+pytest
 attrs
 restview
-mox
+pytest-mock
 # TODO: Apps only
 pytest-django
-pytest-runner
