@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+  # Used until omero-server-docker can configure ports
+  redirect:
+    build: idr/redirect
+  omero:
+    build: idr/omero
+    environment:
+      - ROOTPASS=${ROOTPASS}
+      - CONFIG_omero_upgrades_url=
+      - CONFIG_Ice_IPv6=0
+      - PYTHONPATH=/opt/omero/server/OMERO.server/lib/python
+      - CONFIG_omero_db_name=2018-02-12
+      - CONFIG_omero_db_host=redirect
+      - CONFIG_omero_db_user=postgres
+      - CONFIG_omero_data_dir=/OMERO
+    ports:
+      - "${OMERO_SERVER_TCP}4063"
+      - "${OMERO_SERVER_SSL}4064"
+    volumes:
+      - /uod/idr/filesets:/uod/idr/filesets:ro
+      - ./idr/omero/playbook.yml:/opt/setup/idr.yml:ro
+      - ./idr/40-ansible.sh:/startup/40-ansible.sh
+      - ./idr/70-reset-password.sh:/startup/70-reset-password.sh:ro
+  web:
+    build: idr/web
+    environment:
+      - CONFIG_omero_upgrades_url=
+      - CONFIG_Ice_IPv6=0
+      - PYTHONPATH=/opt/omero/web/OMERO.web/lib/python
+      - VIRTUAL_HOST=*
+    ports:
+      - "${OMERO_WEB_PORT}4080"
+    volumes:
+      - ./idr/web/playbook.yml:/opt/setup/idr.yml:ro
+      - ./idr/40-ansible.sh:/startup/40-ansible.sh
+  thumbnail:
+    build: idr/omero-ms-thumbnail
+    environment:
+      - VIRTUAL_HOST=*/webclient/render_thumbnail
+      - VIRTUAL_HOST_WEIGHT=10
+  lb:
+    image: dockercloud/haproxy:1.6.7
+    environment:
+      - RSYSLOG_DESTINATION=log
+    links:
+      - thumbnail
+      - web
+    ports:
+      - '80:80'
+      - '1936:1936'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+  log:
+    image: rsyslog/syslog_appliance_alpine

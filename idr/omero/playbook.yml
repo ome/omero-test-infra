@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+  vars:
+    omero_db_host_ansible: redirect
+    omero_server_role_release: 2.0.4
+    idr_deployment_release: IDR-0.4.5
+
+  tasks:
+
+    - file:
+        state: directory
+        path: /OMERO
+        owner: omero-server
+
+    - file:
+        state: absent
+        path: /opt/omero/server/OMERO.server/lib/scripts/omero
+
+    - file:
+        state: directory
+        path: /tmp/idr/
+
+    - get_url:
+        url: https://raw.githubusercontent.com/openmicroscopy/ansible-role-omero-server/{{ omero_server_role_release }}/defaults/main.yml
+        dest: /tmp/idr/omero-server-defaults.yml
+
+    - get_url:
+        url: "{{ item }}"
+        dest: "/tmp/idr"
+      with_items:
+        - https://raw.githubusercontent.com/IDR/deployment/{{ idr_deployment_release }}/ansible/group_vars/omero-hosts.yml
+        - https://raw.githubusercontent.com/openmicroscopy/ansible-role-omero-server/{{ omero_server_role_release }}/templates/00-omero-server-omero.j2
+
+    - include_vars: /tmp/idr/omero-server-defaults.yml
+
+    - include_vars: /tmp/idr/omero-hosts.yml
+
+    - template:
+        dest: "/opt/omero/server/config/10-idr-server.omero"
+        src: /tmp/idr/00-omero-server-omero.j2
+        force: yes
