@@ -4,16 +4,22 @@ set -e
 set -u
 
 setup_dir() {
-    # check the location of setup.py
-    ref_file="setup.py"
+    # check the location of setup.py or pyproject.toml
+    ref_files=("setup.py" "pyproject.toml")
     directory="./"
     values=()
-    if [ ! -f $ref_file ]; then
+    for key in "${!ref_files[@]}"
+    do
+        values=()
+        ref_file=${ref_files[$key]}
         values=$(find "$(pwd -P)" -name $ref_file)
+        # length is always 1 even if no value is found
         if [ ${#values[@]} == 1 ]; then
-            directory=$(dirname ${values[0]})
-        fi
-    fi
+            if [ -n "${values[0]}" ]; then
+                directory=$(dirname ${values[0]})
+            fi
+         fi
+    done
     echo $directory
 }
 
