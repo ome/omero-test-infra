@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+  # Used until omero-server-docker can configure ports
+  redirect:
+    build: idr/redirect
+  omero:
+    build: idr/omero
+    environment:
+      - ROOTPASS=${ROOTPASS}
+      - CONFIG_omero_upgrades_url=
+      - CONFIG_Ice_IPv6=0
+      - PYTHONPATH=/opt/omero/server/OMERO.server/lib/python
+      - CONFIG_omero_db_name=2018-02-12
+      - CONFIG_omero_db_host=redirect
+      - CONFIG_omero_db_user=omeroreadonly
+      - CONFIG_omero_data_dir=/OMERO
+      - CONFIG_omero_cluster_read__only.db=true
+      - CONFIG_omero_cluster_read__only.repo=true
+    ports:
+      - "${OMERO_SERVER_TCP}4063"
+      - "${OMERO_SERVER_SSL}4064"
+    volumes:
+      - /uod/idr/current/OMERO:/data/OMERO:ro
+      - /uod/idr/filesets:/uod/idr/filesets:ro
+      - ./idr/omero/playbook.yml:/opt/setup/idr.yml:ro
+      - ./idr/40-ansible.sh:/startup/40-ansible.sh:ro
+      - ./idr/70-reset-password.sh:/startup/70-reset-password.sh:ro
+  web:
+    build: idr/web
+    environment:
+      - CONFIG_omero_upgrades_url=
+      - CONFIG_Ice_IPv6=0
+      - PYTHONPATH=/opt/omero/web/OMERO.web/lib/python
+      - CONFIG_omero_web_session__cookie__name=sessionid
+    ports:
+      - "${OMERO_WEB_PORT}4080"
+    volumes:
+      - ./idr/web/playbook.yml:/opt/setup/idr.yml:ro
+      - ./idr/40-ansible.sh:/startup/40-ansible.sh
+  #thumbnail:
+  #  build: idr/omero-ms-thumbnail
+  mapr:
+    build: idr/omero-ms-mapr
+    command:
+      - /cfg
+    volumes:
+      - ./idr/omero-ms-mapr/cfg:/cfg:ro
+    ports:
+      - "8080:8080"
+  nginx:
+    #build: idr/nginx
+    image: nginx
+    volumes:
+      - ./idr/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./idr/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./idr/40-ansible.sh:/startup/40-ansible.sh
+    ports:
+       # '8080:8080'
+       - '8009:8009'
+       - '9000:9000'
+       - '5000:5000'
+       - '5001:5001'
+       - '5002:5002'
