@@ -1,5 +1,5 @@
 OMERO-Ontop Test Infra
-=====================+
+======================
 
 [![Actions Status](https://github.com/marimeireles/omero-test-infra/workflows/Build/badge.svg)](https://github.com/marimeireles/omero-test-infra/actions)
 
