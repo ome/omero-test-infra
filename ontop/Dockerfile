@@ -1,3 +1,5 @@
+FROM ubuntu:latest
+
 USER root
 
 # Installs dependencies
