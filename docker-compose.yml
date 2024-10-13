@@ -34,5 +34,6 @@ services:
   ontop:
     build:
       context: ./ontop
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
