@@ -31,3 +31,8 @@ services:
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_WEB_PORT}4080"
+  ontop:
+    build:
+      context: ./ontop
+    ports:
+      - "${ONTOP_ENDPOINT}8080"
