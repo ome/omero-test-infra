@@ -35,4 +35,4 @@ services:
     build:
       context: ./ontop
     ports:
-      - "${ONTOP_ENDPOINT}8080"
+      - "8080:8080"
