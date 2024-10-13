@@ -1,4 +1,4 @@
-ARG OMEROWEB_BASE_IMAGE=openmicroscopy/omero-web:latest
+ARG OMEROWEB_BASE_IMAGE=marimeireles/omero-web:latest
 FROM $OMEROWEB_BASE_IMAGE
 
 USER root
