@@ -15,7 +15,15 @@ ENV PATH="/root/miniconda/bin:$PATH"
 # Makes scripts executable
 RUN chmod +x ./install_omero_py.sh ./install_ontop.sh ./run_ontop.sh
 
+# Copy scripts into the container
+COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
+COPY install_ontop.sh /usr/local/bin/install_ontop.sh
+COPY run_ontop.sh /usr/local/bin/run_ontop.sh
+
+# Makes scripts executable
+RUN chmod +x /usr/local/bin/install_omero_py.sh /usr/local/bin/install_ontop.sh /usr/local/bin/run_ontop.sh
+
 # Run scripts
-RUN ./install_omero_py.sh
-RUN ./install_ontop.sh
-RUN ./run_ontop.sh
+RUN /usr/local/bin/install_omero_py.sh
+RUN /usr/local/bin/install_ontop.sh
+RUN /usr/local/bin/run_ontop.sh
