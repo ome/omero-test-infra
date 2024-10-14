@@ -12,9 +12,6 @@ RUN apt-get update && apt-get install -y \
 # Sets ENV PATH for miniconda
 ENV PATH="/root/miniconda/bin:$PATH"
 
-# Makes scripts executable
-RUN chmod +x ./install_omero_py.sh ./install_ontop.sh ./run_ontop.sh
-
 # Copy scripts into the container
 COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
 COPY install_ontop.sh /usr/local/bin/install_ontop.sh
