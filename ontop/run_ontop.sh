@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-OWL_FILE=/usr/local/ontop/mpieb/omemap.ttl
-OBDA_FILE=/usr/local/ontop/mpieb/omemap.obda
-PROPERTIES_FILE=/usr/local/ontop/mpieb/omemap.properties
-ONTOP_CLI_DIR=/usr/local/ontop/ontop-cli
+OWL_FILE=/usr/local/ontop-config/omemap.ttl
+OBDA_FILE=/usr/local/ontop-config/omemap.obda
+PROPERTIES_FILE=/usr/local/ontop-config/omemap.properties
 
 echo "Launching Ontop..."
-exec $ONTOP_CLI_DIR/ontop endpoint --ontology=$OWL_FILE --mapping=$OBDA_FILE --properties=$PROPERTIES_FILE
+exec /usr/local/ontop-config endpoint --ontology=$OWL_FILE --mapping=$OBDA_FILE --properties=$PROPERTIES_FILE

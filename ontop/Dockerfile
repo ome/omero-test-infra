@@ -16,7 +16,7 @@ ENV PATH="/root/miniconda/bin:$PATH"
 COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
 COPY install_ontop.sh /usr/local/bin/install_ontop.sh
 COPY run_ontop.sh /usr/local/bin/run_ontop.sh
-COPY mpieb /usr/local/bin/ontop-cli
+COPY mpieb /usr/local/bin/ontop-config
 
 # Makes scripts executable
 RUN chmod +x /usr/local/bin/install_omero_py.sh /usr/local/bin/install_ontop.sh /usr/local/bin/run_ontop.sh
