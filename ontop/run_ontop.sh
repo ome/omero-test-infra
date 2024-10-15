@@ -5,13 +5,12 @@ OWL_FILE=/usr/local/bin/ontop-config/omemap.ttl
 OBDA_FILE=/usr/local/bin/ontop-config/omemap.obda
 PROPERTIES_FILE=/usr/local/bin/ontop-config/omemap.properties
 
-apt update && apt install -y net-tools
 
+apt update && apt install -y lsof
 echo "==============================================================="
 echo "Checking whether Java and Postgres are running and operational"
-echo "Whats in the port where sql should be?"
-netstat -tuln | grep -q ":5432"
 # Check if Java is running
+lsof -i -P -n
 if pgrep -x "java" > /dev/null
 then
     echo "Java is running"
