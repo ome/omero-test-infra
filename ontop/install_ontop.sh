@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 INSTALL_DIR="ontop-cli"
 ZIP_FILE="ontop-cli-5.2.0.zip"
