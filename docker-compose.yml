@@ -5,6 +5,8 @@ services:
     image: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
   omero:
     build:
       context: ./omeroserver
