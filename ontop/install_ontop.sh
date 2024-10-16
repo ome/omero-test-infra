@@ -19,27 +19,4 @@ else
     echo "Ontop CLI is already installed."
 fi
 
-
-apt update && apt install -y lsof
-echo "==============================================================="
-echo "Checking whether Java and Postgres are running and operational"
-# Check if Java is running
-lsof -i -P -n
-if pgrep -x "java" > /dev/null
-then
-    echo "Java is running"
-else
-    echo "Java is not running"
-fi
-
-# Check if Postgres is running
-if pgrep -x "postgres" > /dev/null
-then
-    echo "Postgres is running"
-else
-    echo "Postgres is not running"
-fi
-echo "==============================================================="
-
-
 echo "Ontop installation completed."
