@@ -36,5 +36,7 @@ services:
   ontop:
     build:
       context: ./ontop
+      RUN echo "🐷🐷🐷🐷🐷🐷🐷🐷🐷"
+      RUN java -version
     ports:
       - "8080:8080"
