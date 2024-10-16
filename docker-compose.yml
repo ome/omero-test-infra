@@ -22,8 +22,8 @@ services:
       - CONFIG_omero_policy_binary__access=${OMERO_POLICY_BINARY_ACCESS}
       - CONFIG_Ice_IPv6=0
     ports:
-      - "$4063:4063"
-      - "$4064:4064"
+      - "4063:4063"
+      - "4064:4064"
   web:
     build:
       context: ./omeroweb
