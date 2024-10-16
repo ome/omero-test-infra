@@ -27,5 +27,7 @@ RUN /usr/local/bin/install_ontop.sh
 
 RUN echo "🐷🐷🐷🐷🐷🐷🐷🐷🐷"
 RUN java -version
+RUN docker ps
+RUN docker-compose logs db
 
 RUN /usr/local/bin/run_ontop.sh
