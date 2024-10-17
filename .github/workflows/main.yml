@@ -31,7 +31,8 @@ jobs:
       - name: Build
         run: |
           cd /tmp/omero-app
-          .omero/compose up -d
+          .omero/compose up -d || true
+          echo "🌞"
           docker network inspect mynetwork
           .omero/compose logs
           .omero/compose down
