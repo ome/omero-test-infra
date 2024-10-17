@@ -14,4 +14,9 @@ rm $ZIP_FILE
 echo "Download JDBC driver for PostgreSQL"
 wget https://jdbc.postgresql.org/download/$JDBC_DRIVER -P $INSTALL_DIR/jdbc
 
+echo "🌻🌻🌻🌻🌻"
+echo "jdbc added in the correct location: "
+ls $INSTALL_DIR/jdbc
+echo "🌻🌻🌻🌻🌻"
+
 echo "Ontop installation completed."
