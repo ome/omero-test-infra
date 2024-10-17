@@ -1,7 +1,8 @@
 #!/bin/sh
 # set -e
 
-INSTALL_DIR="ontop-cli"
+CURRENT_DIR=$(pwd)
+INSTALL_DIR="$CURRENT_DIR/ontop-cli"
 ZIP_FILE="ontop-cli-5.2.0.zip"
 JDBC_DRIVER="postgresql-42.7.4.jar"
 
