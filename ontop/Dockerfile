@@ -25,7 +25,4 @@ RUN chmod +x /usr/local/bin/install_omero_py.sh /usr/local/bin/install_ontop.sh 
 RUN /usr/local/bin/install_omero_py.sh
 RUN /usr/local/bin/install_ontop.sh
 
-RUN echo "🐷🐷🐷🐷🐷🐷🐷🐷🐷"
-RUN java -version
-
 RUN /usr/local/bin/run_ontop.sh
