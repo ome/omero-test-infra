@@ -21,5 +21,5 @@ ls /usr/local/bin/ontop-config
 echo "💥💥💥💥💥💥"
 
 echo "Launching Ontop..."
-exec ontop-cli/ontop endpoint --ontology=$OWL_FILE --mapping=$OBDA_FILE --properties=$PROPERTIES_FILE
+exec ontop-cli/ontop --debug endpoint --ontology=$OWL_FILE --mapping=$OBDA_FILE --properties=$PROPERTIES_FILE
 
