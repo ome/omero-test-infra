@@ -7,6 +7,7 @@ PROPERTIES_FILE=/usr/local/bin/ontop-config/omemap.properties
 
 echo "🌸🌸🌸🌸🌸🌸🌸"
 echo "testing connection with db"
+apt-get update && apt-get install -y iputils-ping
 ping db
 echo "🌸🌸🌸🌸🌸🌸🌸"
 
