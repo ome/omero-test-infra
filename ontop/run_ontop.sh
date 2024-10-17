@@ -16,6 +16,9 @@ echo "where am I"
 ls
 pwd
 echo "💥💥💥💥💥💥"
+echo "ok now an LS to make sure my paths for files are A-Okay"
+ls /usr/local/bin/ontop-config
+echo "💥💥💥💥💥💥"
 
 echo "Launching Ontop..."
 exec ontop-cli/ontop endpoint --ontology=$OWL_FILE --mapping=$OBDA_FILE --properties=$PROPERTIES_FILE
