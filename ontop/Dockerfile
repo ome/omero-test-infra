@@ -21,8 +21,10 @@ COPY mpieb /usr/local/bin/ontop-config
 # Makes scripts executable
 RUN chmod +x /usr/local/bin/install_omero_py.sh /usr/local/bin/install_ontop.sh /usr/local/bin/run_ontop.sh
 
+# Installs postgres client because why not
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Run scripts
 RUN /usr/local/bin/install_omero_py.sh
 RUN /usr/local/bin/install_ontop.sh
-
 RUN /usr/local/bin/run_ontop.sh
