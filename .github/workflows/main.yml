@@ -32,6 +32,8 @@ jobs:
         run: |
           cd /tmp/omero-app
           .omero/compose up -d
+          docker network inspect mynetwork
+          .omero/compose logs
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
