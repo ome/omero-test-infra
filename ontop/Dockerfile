@@ -23,7 +23,8 @@ COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
 COPY mpieb /usr/local/bin/ontop-config
 
 # Makes scripts executable
-RUN chmod +x /usr/local/bin/install_omero_py.sh /usr/local/bin/install_ontop.sh /usr/local/bin/run_ontop.sh
+RUN chmod +x /usr/local/bin/install_omero_py.sh 
+# /usr/local/bin/install_ontop.sh /usr/local/bin/run_ontop.sh
 
 
 # Run scripts
