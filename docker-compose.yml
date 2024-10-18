@@ -5,8 +5,6 @@ services:
     image: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    networks:
-      - mynetwork
     ports:
       - "5432:5432"
   omero:
@@ -23,8 +21,6 @@ services:
       - CONFIG_omero_upgrades_url=
       - CONFIG_omero_policy_binary__access=${OMERO_POLICY_BINARY_ACCESS}
       - CONFIG_Ice_IPv6=0
-    networks:
-      - mynetwork
     ports:
       - "4063:4063"
       - "4064:4064"
@@ -38,16 +34,14 @@ services:
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_WEB_PORT}:4080"
+
   ontop:
     build:
       context: ./ontop
-    networks:
-      - mynetwork
-    depends_on:
-      - db
+    environment:
+      - ONTOP_DB_HOST=db
+      - ONTOP_DB_USER=postgres
+      - ONTOP_DB_NAME=postgres
+      - ONTOP_DB_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "8080:8080"
-
-networks:
-  mynetwork:
-    driver: bridge
