@@ -34,6 +34,16 @@ jobs:
           .omero/compose up -d
           echo "🐳 whale check 🐳"
           docker ps
+      - name: Wait for Ontop service to be available
+        run: |
+          for i in {1..30}; do
+            curl --silent --fail http://localhost:8080/sparql && break
+            echo "Waiting for Ontop service..."
+            sleep 10
+          done
+      - name: Build-continuation
+        run: |
+          docker ps
           echo "Testing 🙈☺️"
           curl "http://localhost:8080/sparql?query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D+LIMIT+10"
           .omero/compose down
