@@ -36,8 +36,8 @@ jobs:
           docker ps
       - name: Wait for Ontop service to be available
         run: |
-          for i in {1..30}; do
-            curl --silent --fail http://localhost:8080/sparql && break
+          for i in {1..10}; do
+            curl --silent --fail http://0.0.0.0:8080/ && break
             echo "Waiting for Ontop service..."
             sleep 10
           done
