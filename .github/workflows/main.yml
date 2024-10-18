@@ -31,11 +31,11 @@ jobs:
       - name: Build
         run: |
           cd /tmp/omero-app
-          .omero/compose up -d || true
+          .omero/compose up -d
           .omero/compose logs
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
       - name: Test
         run: |
-        curl "http://172.16.5.141:8080/sparql?query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D+LIMIT+10"
+          curl "http://localhost:8080/sparql?query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D+LIMIT+10"
