@@ -37,7 +37,7 @@ RUN /usr/local/bin/install_omero_py.sh
 COPY mpieb/omemap.obda mpieb/omemap.properties mpieb/omemap.ttl /opt/ontop/input/
 
 # Download the PostgreSQL JDBC driver and place it in the jdbc directory
-RUN wget https://jdbc.postgresql.org/download/postgresql-42.7.4.jar -P /opt/ontop/jdbc/
+RUN wget --no-check-certificate https://jdbc.postgresql.org/download/postgresql-42.7.4.jar -P /opt/ontop/jdbc/
 
 # Expose the necessary port for Ontop
 EXPOSE 8080
