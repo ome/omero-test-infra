@@ -32,12 +32,11 @@ jobs:
         run: |
           cd /tmp/omero-app
           .omero/compose up -d
-          .omero/compose logs
+          echo "Testing 🙈☺️"
+          curl "http://localhost:8080/sparql?query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D+LIMIT+10"
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
-          echo "Testing 🙈☺️"
-          curl "http://localhost:8080/sparql?query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D+LIMIT+10"
       # - name: Check running containers
       #   run: docker ps
       # - name: Test Ontop SPARQL service
