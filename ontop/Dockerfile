@@ -59,4 +59,6 @@ ENTRYPOINT java -cp ./lib/*:./jdbc/* -Dlogback.configurationFile=file:./log/logb
 
 # TODO: should probably run these outside the container? Or?
 RUN echo "Running tests"
+COPY ../tests /usr/local/bin/tests
+RUN chmod +x tests
 RUN python tests/unit_test.py
