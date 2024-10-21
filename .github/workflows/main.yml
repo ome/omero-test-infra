@@ -43,8 +43,6 @@ jobs:
           done
       - name: Build-continuation
         run: |
-          echo "Running tests"
-          python tests/unit_test.py
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup

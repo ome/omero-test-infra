@@ -56,3 +56,7 @@ ENTRYPOINT java -cp ./lib/*:./jdbc/* -Dlogback.configurationFile=file:./log/logb
     --properties=/opt/ontop/input/omemap.properties \
     --cors-allowed-origins=http://yasgui.org \
     --lazy
+
+# TODO: should probably run these outside the container? Or?
+RUN echo "Running tests"
+RUN python tests/unit_test.py
