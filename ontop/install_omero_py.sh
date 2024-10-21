@@ -25,5 +25,6 @@ conda install -y python=3.9.15
 
 # Install omero-py
 conda install -y omero-py
+conda install -y rdflib
 
-echo "omero-py installed successfully"
+echo "omero-py and rdflib installed successfully"

@@ -43,9 +43,8 @@ jobs:
           done
       - name: Build-continuation
         run: |
-          docker ps
-          echo "Testing 🙈☺️"
-          curl "http://localhost:8080/sparql?query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D+LIMIT+10"
+          echo "Running tests"
+          python tests/unit_test.py
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
