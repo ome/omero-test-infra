@@ -24,7 +24,6 @@ conda config --set channel_priority strict
 conda install -y python=3.9.15
 
 # Install omero-py
-conda install -y omero-py
-conda install -y rdflib
+conda install -y omero-py rdflib
 
 echo "omero-py and rdflib installed successfully"
