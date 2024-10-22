@@ -37,7 +37,7 @@ jobs:
       - name: Run tests
         run: |
           echo "test sweet 🍌"
-          pip install rdflib
+          pip install rdflib requests
           python -m unittest discover -s tests
           python tests/unit_test.py 
       - name: Wait for Ontop service to be available
