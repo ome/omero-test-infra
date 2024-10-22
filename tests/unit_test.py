@@ -64,9 +64,10 @@ select (count(distinct ?tp) as ?n_types) where {{
         print(response)
 
         for r in response:
+          print(👽)
             print(r)
 
-        self.assertEqual(len(response), 1)
+        self.assertEqual(len(response), 1) #TODO not sure if we should be checking the len of this obj here?
         self.assertEqual(int([r.n_types for r in response][0]), 1)
 
     def test_dataset_type_value(self):
