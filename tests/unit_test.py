@@ -12,6 +12,8 @@ ENDPOINT = "http://0.0.0.0:8080/sparql"
 # Check if endpoint is reachable.
 try:
     response = requests.get("/".join(os.path.split(ENDPOINT)[:-1]))
+    print('🌸 response outside tests this is just checking for endpoint health 🌸')
+    print(response)
     if response.status_code != 200:
         raise RuntimeError(
             f"Could not connect to ontop endpoint {ENDPOINT}. Status code: {response.status_code}"
@@ -58,6 +60,8 @@ select (count(distinct ?tp) as ?n_types) where {{
 """
         print(query_string)
         response = graph.query(query_string)
+        print('response inside test_dataset_type_relations 👽 lil alien for luck')
+        print(response)
 
         for r in response:
             print(r)
