@@ -12,10 +12,10 @@ ENDPOINT = "http://0.0.0.0:8080/"
 # Check if endpoint is reachable.
 try:
     response = requests.get("/".join(os.path.split(ENDPOINT)[:-1]))
-    assert response.status_code == 200
-
-except: 
-    raise RuntimeError("Could not connect to ontop endpoint %s. Is ontop endpoint up and running?" % ENDPOINT)
+    if response.status_code != 200:
+        raise RuntimeError(f"Could not connect to ontop endpoint {ENDPOINT}. Status code: {response.status_code}")
+except requests.exceptions.RequestException as e:
+    raise RuntimeError(f"Error connecting to endpoint {ENDPOINT}: {e}")
 
 class QueriesTest(unittest.TestCase):
     
