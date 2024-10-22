@@ -34,6 +34,10 @@ jobs:
           .omero/compose up -d
           echo "🐳 whale check 🐳"
           docker ps
+      - name: Run tests
+        run: |
+          # Run the test suite
+          python -m unittest discover -s tests
       - name: Wait for Ontop service to be available
         run: |
           for i in {1..10}; do
@@ -43,6 +47,7 @@ jobs:
           done
       - name: Build-continuation
         run: |
+          cd /tmp/omero-app
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
