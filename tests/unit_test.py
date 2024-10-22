@@ -7,7 +7,7 @@ from urllib import parse
 
 import unittest
 
-ENDPOINT = "http://localhost:8080/sparql"
+ENDPOINT = "http://0.0.0.0:8080/"
 
 # Check if endpoint is reachable.
 try:
