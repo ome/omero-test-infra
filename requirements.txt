@@ -8,5 +8,6 @@ pytest
 attrs
 restview
 pytest-mock
+rdflib
 # TODO: Apps only
 pytest-django

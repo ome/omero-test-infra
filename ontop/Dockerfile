@@ -17,18 +17,18 @@ USER root
 ENV PATH="/root/miniconda/bin:$PATH"
 
 # Copy scripts into the container
-COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
+# COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
 # COPY install_ontop.sh /usr/local/bin/install_ontop.sh
 # COPY run_ontop.sh /usr/local/bin/run_ontop.sh
 COPY mpieb /usr/local/bin/ontop-config
 
 # Makes scripts executable
-RUN chmod +x /usr/local/bin/install_omero_py.sh 
+# RUN chmod +x /usr/local/bin/install_omero_py.sh 
 # /usr/local/bin/install_ontop.sh /usr/local/bin/run_ontop.sh
 
 
 # Run scripts
-RUN /usr/local/bin/install_omero_py.sh
+# RUN /usr/local/bin/install_omero_py.sh
 # RUN /usr/local/bin/install_ontop.sh
 # RUN /usr/local/bin/run_ontop.sh
 
@@ -56,9 +56,3 @@ ENTRYPOINT java -cp ./lib/*:./jdbc/* -Dlogback.configurationFile=file:./log/logb
     --properties=/opt/ontop/input/omemap.properties \
     --cors-allowed-origins=http://yasgui.org \
     --lazy
-
-# TODO: should probably run these outside the container? Or?
-RUN echo "Running tests"
-COPY tests/unit_test.py /usr/local/bin/tests/unit_test.py
-RUN chmod +x /usr/local/bin/tests/unit_test.py
-RUN python /usr/local/bin/tests/unit_test.py
