@@ -64,11 +64,14 @@ select (count(distinct ?tp) as ?n_types) where {{
         print(response)
 
         for r in response:
-          print('👽')
-          print(r)
+            print('👽 lil alien for luck')
+            print(f"Retrieved result: tp={r['tp']}")
 
-        self.assertEqual(len(response), 1) #TODO not sure if we should be checking the len of this obj here?
-        self.assertEqual(int([r.n_types for r in response][0]), 1)
+        self.assertEqual(len(response), 1)
+
+        # Extract and check the number of types
+        n_types = int(list(response)[0]["n_types"].toPython())  # Convert Literal to int
+        self.assertEqual(n_types, 1)
 
     def test_dataset_type_value(self):
         """A ome_core:Dataset instance must be of type ome_core:Dataset (issue #5)."""
