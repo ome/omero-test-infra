@@ -13,25 +13,28 @@ ENDPOINT = "http://0.0.0.0:8080/"
 try:
     response = requests.get("/".join(os.path.split(ENDPOINT)[:-1]))
     if response.status_code != 200:
-        raise RuntimeError(f"Could not connect to ontop endpoint {ENDPOINT}. Status code: {response.status_code}")
+        raise RuntimeError(
+            f"Could not connect to ontop endpoint {ENDPOINT}. Status code: {response.status_code}"
+        )
 except requests.exceptions.RequestException as e:
     raise RuntimeError(f"Error connecting to endpoint {ENDPOINT}: {e}")
 
+
 class QueriesTest(unittest.TestCase):
-    
+
     def setUp(self):
-        """ Setup run at the beginning of each test method."""
-        
+        """Setup run at the beginning of each test method."""
+
         # Setup a graph.
         self._graph = Graph()
-        
+
         # Empty list to collect files and dirs created during tests. These will be
-        #+ deleted after the test ends (see `tearDown()` below).
+        # + deleted after the test ends (see `tearDown()` below).
         self._thrash = []
-        
+
     def tearDown(self):
-        """ Teardown method run at the end of each test method. """
-        
+        """Teardown method run at the end of each test method."""
+
         for item in self._thrash:
             if os.path.isfile(item):
                 os.remove(item)
@@ -39,7 +42,7 @@ class QueriesTest(unittest.TestCase):
                 shutil.rmtree(item)
 
     def test_dataset_type_relations(self):
-        """ There must be one and only one rdf:type relation for datasets (issue #5)."""
+        """There must be one and only one rdf:type relation for datasets (issue #5)."""
 
         graph = self._graph
 
@@ -63,7 +66,7 @@ select (count(distinct ?tp) as ?n_types) where {{
         self.assertEqual(int([r.n_types for r in response][0]), 1)
 
     def test_dataset_type_value(self):
-        """ A ome_core:Dataset instance must be of type ome_core:Dataset (issue #5)."""
+        """A ome_core:Dataset instance must be of type ome_core:Dataset (issue #5)."""
 
         query_string = f"""
 prefix ome_core: <http://www.openmicroscopy.org/rdf/2016-06/ome_core/>
@@ -81,7 +84,10 @@ select distinct ?tp where {{
         for r in response:
             print(r)
 
-        self.assertIn(URIRef("http://www.openmicroscopy.org/rdf/2016-06/ome_core/Dataset"), [r.tp for r in response])
+        self.assertIn(
+            URIRef("http://www.openmicroscopy.org/rdf/2016-06/ome_core/Dataset"),
+            [r.tp for r in response],
+        )
 
     def test_number_of_projects_datasets_images(self):
 
@@ -121,11 +127,11 @@ select ?n_projects ?n_datasets ?n_images where {{
         number_of_objects = [r for r in response][0]
         self.assertEqual(int(number_of_objects.n_projects), 1)
         self.assertEqual(int(number_of_objects.n_datasets), 3)
-        self.assertEqual(int(number_of_objects.n_images  ),  10)
+        self.assertEqual(int(number_of_objects.n_images), 10)
 
     def test_project(self):
-        """ Test number of projects in the VKG. """
-        
+        """Test number of projects in the VKG."""
+
         graph = self._graph
 
         query_string = f"""
@@ -144,10 +150,10 @@ select ?n_projects ?n_datasets ?n_images where {{
 
         # Test.
         self.assertEqual(len(response), 1)
- 
+
     def test_dataset(self):
-        """ Test that there are 3 datasets in the graph db"""
-        
+        """Test that there are 3 datasets in the graph db"""
+
         graph = self._graph
 
         query_string = f"""
@@ -166,10 +172,10 @@ select ?n_projects ?n_datasets ?n_images where {{
 
         # Test.
         self.assertEqual(len(response), 3)
-  
+
     def test_image(self):
-        """ Test number of images in VKG. """
-        
+        """Test number of images in VKG."""
+
         graph = self._graph
 
         query_string = f"""
@@ -192,7 +198,7 @@ select ?n_projects ?n_datasets ?n_images where {{
         self.assertEqual(len(response), 10)
 
     def test_project_dataset_image(self):
-        """ Test a query for a project-dataset-image hierarchy. """
+        """Test a query for a project-dataset-image hierarchy."""
 
         graph = self._graph
 
@@ -218,7 +224,7 @@ select ?n_projects ?n_datasets ?n_images where {{
         self.assertEqual(len(response), 10)
 
     def test_image_key_value(self):
-        """ Test querying for an image property via the mapannotation key."""
+        """Test querying for an image property via the mapannotation key."""
 
         graph = self._graph
 
@@ -243,7 +249,7 @@ select ?n_projects ?n_datasets ?n_images where {{
         self.assertEqual(len(response), 10)
 
     def test_project_key_value(self):
-        """ Test querying for a project property via the mapannotation key."""
+        """Test querying for a project property via the mapannotation key."""
 
         graph = self._graph
 
@@ -270,7 +276,7 @@ select ?n_projects ?n_datasets ?n_images where {{
         self.assertEqual(len(response), 1)
 
     def test_dataset_key_value(self):
-        """ Test querying for an dataset property via the mapannotation key."""
+        """Test querying for an dataset property via the mapannotation key."""
 
         graph = self._graph
 
@@ -297,8 +303,7 @@ select ?n_projects ?n_datasets ?n_images where {{
         self.assertEqual(len(response), 3)
 
     def test_tagged_dataset(self):
-        """ Test querying all tagged datasets and their tag(s). """
-
+        """Test querying all tagged datasets and their tag(s)."""
 
         query = """
 
@@ -311,14 +316,13 @@ select ?n_projects ?n_datasets ?n_images where {{
         escapedQuery = parse.quote(query)
         requestURL = ENDPOINT + "?query=" + escapedQuery
         response = requests.get(requestURL).json()
-        bindings = response['results']['bindings']
+        bindings = response["results"]["bindings"]
 
         self.assertEqual(len(bindings), 1)
-        self.assertEqual(bindings[0]['tag']['value'], 'TestTag')
+        self.assertEqual(bindings[0]["tag"]["value"], "TestTag")
 
     def test_tagged_images(self):
-        """ Test querying all tagged images and their tag(s). """
-
+        """Test querying all tagged images and their tag(s)."""
 
         query = """
 
@@ -331,16 +335,15 @@ select ?n_projects ?n_datasets ?n_images where {{
         escapedQuery = parse.quote(query)
         requestURL = ENDPOINT + "?query=" + escapedQuery
         response = requests.get(requestURL).json()
-        bindings = response['results']['bindings']
+        bindings = response["results"]["bindings"]
 
         # All images (10) are tagged.
         self.assertEqual(len(bindings), 10)
 
         # They're all tagged "Screenshot"
-        self.assertEqual(len(set([b['tag']['value'] for b in bindings])), 1)
-        self.assertEqual(bindings[0]['tag']['value'], "Screenshot")
+        self.assertEqual(len(set([b["tag"]["value"] for b in bindings])), 1)
+        self.assertEqual(bindings[0]["tag"]["value"], "Screenshot")
 
 
 if __name__ == "__main__":
     unittest.main()
-
