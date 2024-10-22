@@ -351,7 +351,3 @@ select ?n_projects ?n_datasets ?n_images where {{
         # They're all tagged "Screenshot"
         self.assertEqual(len(set([b["tag"]["value"] for b in bindings])), 1)
         self.assertEqual(bindings[0]["tag"]["value"], "Screenshot")
-
-
-if __name__ == "__main__":
-    unittest.main()

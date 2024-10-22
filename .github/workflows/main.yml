@@ -44,11 +44,10 @@ jobs:
       - name: Run tests
         run: |
           echo "test sweet 🍌"
-          pip install rdflib requests
+          pip install rdflib requests pytest
           curl "http://0.0.0.0:8080/sparql/?query=PREFIX%20ome_core%3A%20%3Chttp%3A%2F%2Fwww.openmicroscopy.org%2Frdf%2F2016-06%2Fome_core%2F%3E%0ASELECT%20DISTINCT%20%3Fs%20%3Ftag%20WHERE%20%7B%0A%20%20%20%20%3Fs%20a%20ome_core%3AImage%3B%0A%20%20%20%20%20%20%20%20ome_core%3AtagAnnotationValue%20%3Ftag.%0A%7D"
           echo "after curl 🍌"
-          python -m unittest discover -s tests
-          python tests/unit_test.py 
+          pytest --disable-warnings -v
       - name: Build-continuation
         run: |
           cd /tmp/omero-app
