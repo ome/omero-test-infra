@@ -34,12 +34,6 @@ jobs:
           .omero/compose up -d
           echo "🐳 whale check 🐳"
           docker ps
-      - name: Run tests
-        run: |
-          echo "test sweet 🍌"
-          pip install rdflib requests
-          python -m unittest discover -s tests
-          python tests/unit_test.py 
       - name: Wait for Ontop service to be available
         run: |
           for i in {1..10}; do
@@ -47,6 +41,12 @@ jobs:
             echo "Waiting for Ontop service..."
             sleep 10
           done
+      - name: Run tests
+        run: |
+          echo "test sweet 🍌"
+          pip install rdflib requests
+          python -m unittest discover -s tests
+          python tests/unit_test.py 
       - name: Build-continuation
         run: |
           cd /tmp/omero-app
