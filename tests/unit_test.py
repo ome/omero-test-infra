@@ -64,7 +64,7 @@ select (count(distinct ?tp) as ?n_types) where {{
         print(response)
 
         for r in response:
-          print(👽)
+          print('👽')
             print(r)
 
         self.assertEqual(len(response), 1) #TODO not sure if we should be checking the len of this obj here?
