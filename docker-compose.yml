@@ -45,3 +45,11 @@ services:
       - ONTOP_DB_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    command: >
+      /bin/sh -c "
+      pytest"
