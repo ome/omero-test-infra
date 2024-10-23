@@ -16,6 +16,7 @@ export PATH="$HOME/miniconda/bin:$PATH"
 source "$HOME/miniconda/bin/activate"
 
 # Update conda and configure to use conda-forge channel by default
+conda config --set solver classic
 conda update -y conda
 conda config --add channels conda-forge
 conda config --set channel_priority strict
