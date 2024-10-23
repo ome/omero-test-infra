@@ -4,7 +4,7 @@
 set -e
 
 # Fetch Miniconda
-wget --no-check-certificate https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+wget --no-check-certificate https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh -O miniconda.sh
 
 # Install Miniconda
 [ -d "$HOME/miniconda" ] || bash miniconda.sh -b -p $HOME/miniconda
@@ -16,7 +16,6 @@ export PATH="$HOME/miniconda/bin:$PATH"
 source "$HOME/miniconda/bin/activate"
 
 # Update conda and configure to use conda-forge channel by default
-conda config --set solver classic
 conda update -y conda
 conda config --add channels conda-forge
 conda config --set channel_priority strict
