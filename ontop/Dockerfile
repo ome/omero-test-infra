@@ -11,15 +11,18 @@ ENV PATH="/root/miniconda/bin:$PATH"
 
 # Copy scripts into the container
 COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
+COPY test_infra_ontop/insert_data.sh /usr/local/bin/insert_data.sh
 COPY test_infra_ontop /usr/local/bin/ontop-config
 COPY test_infra_ontop/test_endpoint.py /usr/local/bin/ontop-config/tests
 
 # Makes scripts executable
 RUN chmod +x /usr/local/bin/install_omero_py.sh 
-
+RUN chmod +x /usr/local/bin/insert_data.sh
+RUN chmod +x /usr/local/bin/tests
 
 # Run scripts
 RUN /usr/local/bin/install_omero_py.sh
+RUN /usr/local/bin/insert_data.sh
 
 # Copy property files from your local directory to the container
 COPY test_infra_ontop/omemap.obda test_infra_ontop/omemap.properties test_infra/omemap.ttl test_infra/catalog-v001.xml /opt/ontop/input/
