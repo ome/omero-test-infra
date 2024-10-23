@@ -11,21 +11,16 @@ ENV PATH="/root/miniconda/bin:$PATH"
 
 # Copy scripts into the container
 COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
-COPY test_infra_ontop/insert_data.sh /usr/local/bin/insert_data.sh
-COPY test_infra_ontop /usr/local/bin/ontop-config
-COPY test_infra_ontop/test_endpoint.py /usr/local/bin/ontop-config/tests
+# COPY test_infra_ontop /usr/local/bin/ontop-config I think this line is wrong
+COPY test_infra_ontop /opt/ontop/input/
 
 # Makes scripts executable
 RUN chmod +x /usr/local/bin/install_omero_py.sh 
-RUN chmod +x /usr/local/bin/insert_data.sh
-RUN chmod +x /usr/local/bin/tests
+RUN chmod +x /opt/ontop/input
 
 # Run scripts
 RUN /usr/local/bin/install_omero_py.sh
-RUN /usr/local/bin/insert_data.sh
-
-# Copy property files from your local directory to the container
-COPY test_infra_ontop/omemap.obda test_infra_ontop/omemap.properties test_infra/omemap.ttl test_infra/catalog-v001.xml /opt/ontop/input/
+RUN /opt/ontop/input/insert_data.sh
 
 # Download the PostgreSQL JDBC driver and place it in the jdbc directory
 RUN wget --no-check-certificate https://jdbc.postgresql.org/download/postgresql-42.7.4.jar -P /opt/ontop/jdbc/
