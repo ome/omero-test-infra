@@ -16,7 +16,7 @@ COPY test_infra_ontop /opt/ontop/input/
 
 # Makes scripts executable
 RUN chmod +x /usr/local/bin/install_omero_py.sh 
-RUN chmod +x /opt/ontop/input
+RUN chmod +x /opt/ontop/input/*
 
 # Run scripts
 RUN /usr/local/bin/install_omero_py.sh
