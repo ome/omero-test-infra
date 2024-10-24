@@ -15,15 +15,9 @@ export PATH="$HOME/miniconda/bin:$PATH"
 # Initialize conda for shell interaction
 source "$HOME/miniconda/bin/activate"
 
-# Update conda and configure to use conda-forge channel by default
-conda update -y conda
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-
-# Install Python 3.9.15 in the base environment
-conda install -y python=3.9.15
-
-# Install omero-py
-conda install -y omero-py rdflib requests pytest
+# Install depenendcies
+conda install -c conda-forge -y mamba
+mamba install -c conda-forge -y python=3.9.15
+mamba install -c conda-forge  -y omero-py rdflib requests pytest
 
 echo "omero-py, rdflib, pytest and requests installed successfully"
