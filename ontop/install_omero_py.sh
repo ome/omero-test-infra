@@ -3,8 +3,8 @@
 # Stop the script if any step fails
 set -e
 
-# Install Micromamba using the installation script
-curl -Ls https://micro.mamba.pm/install.sh | bash
+# Install Micromamba using the installation script via wget
+wget -qO- https://micro.mamba.pm/install.sh | bash
 
 # Add Micromamba to PATH
 export PATH="$HOME/micromamba/bin:$PATH"
@@ -25,4 +25,4 @@ micromamba config set channel_priority strict
 # Install omero-py and other packages
 micromamba install -y omero-py rdflib requests pytest
 
-echo "omero-py, rdflib, pytest and requests installed successfully"
+echo "omero-py, rdflib, pytest, and requests installed successfully"
