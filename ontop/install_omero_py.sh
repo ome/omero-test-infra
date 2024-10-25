@@ -3,6 +3,9 @@
 # Stop the script if any step fails
 set -e
 
+# Install package for unzipping Micromamba
+sudo apt-get update && sudo apt-get install -y bzip2
+
 # Fetch Micromamba
 wget --no-check-certificate https://micro.mamba.pm/api/micromamba/linux-64/latest -O micromamba.tar.bz2
 
