@@ -3,21 +3,26 @@
 # Stop the script if any step fails
 set -e
 
-# Fetch Miniconda
-wget --no-check-certificate https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh -O miniconda.sh
+# Fetch Micromamba
+wget --no-check-certificate https://micro.mamba.pm/api/micromamba/linux-64/latest -O micromamba.tar.bz2
 
-# Install Miniconda
-[ -d "$HOME/miniconda" ] || bash miniconda.sh -b -p $HOME/miniconda
+# Extract Micromamba
+tar -xvjf micromamba.tar.bz2 -C $HOME
 
-# Add Miniconda to PATH
-export PATH="$HOME/miniconda/bin:$PATH"
+# Add Micromamba to PATH
+export PATH="$HOME/bin:$PATH"
 
-# Initialize conda for shell interaction
-source "$HOME/miniconda/bin/activate"
+# Create the base environment with Micromamba
+micromamba create -y -p $HOME/micromamba-env python=3.9.15
 
-# Install depenendcies
-conda install -c conda-forge -y mamba
-mamba install -c conda-forge -y python=3.9.15
-mamba install -c conda-forge  -y omero-py rdflib requests pytest
+# Activate the base environment
+source $HOME/micromamba-env/bin/activate
+
+# Configure to use conda-forge channel by default
+micromamba config --add channels conda-forge
+micromamba config --set channel_priority strict
+
+# Install omero-py
+micromamba install -y -n base omero-py rdflib requests pytest
 
 echo "omero-py, rdflib, pytest and requests installed successfully"
