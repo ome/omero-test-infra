@@ -4,7 +4,7 @@
 set -e
 
 apt-get update
-apt-get install -y curl tar xz-utils
+apt-get install -y curl tar xz-utils bzip2
 
 # Create a directory for Micromamba
 mkdir -p ~/micromamba
