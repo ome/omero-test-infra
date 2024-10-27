@@ -16,7 +16,7 @@ ls
 
 # Add Micromamba to PATH
 export PATH="$HOME/micromamba/bin:$PATH"
-export MAMBA_ROOT_PREFIX=~/micromamba
+export MAMBA_ROOT_PREFIX="$HOME/micromamba-root"
 
 # Initialize Micromamba shell
 eval "$(./bin/micromamba shell hook -s posix)"
