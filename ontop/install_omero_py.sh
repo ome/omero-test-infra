@@ -10,7 +10,9 @@ apt-get install -y curl tar xz-utils
 mkdir -p ~/micromamba
 
 # Install Micromamba using the installation script via wget
+echo 'curl 🐌🐌🐌'
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+ls
 
 # Add Micromamba to PATH
 export PATH="$HOME/micromamba/bin:$PATH"
