@@ -13,6 +13,7 @@ curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/mi
 ls
 
 eval "$(./bin/micromamba shell hook -s posix)"
+export MAMBA_ROOT_PREFIX=~/micromamba
 ./bin/micromamba shell init -s bash -r "$MAMBA_ROOT_PREFIX"
 # ./bin/micromamba shell init -s bash -r ~/micromamba
 source ~/.bashrc
