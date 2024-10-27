@@ -18,8 +18,8 @@ ls
 export PATH="$HOME/micromamba/bin:$PATH"
 
 # Initialize Micromamba shell
-eval "$(./bin/micromamba bash hook -s posix)"
-./bin/micromamba bash init -s bash -r ~/micromamba
+eval "$(./bin/micromamba shell hook -s posix)"
+./bin/micromamba shell init -s bash -r ~/micromamba
 source ~/.bashrc
 
 micromamba activate
