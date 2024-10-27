@@ -6,20 +6,14 @@ set -e
 apt-get update
 apt-get install -y curl tar xz-utils bzip2
 
-# Create a directory for Micromamba
-mkdir -p ~/micromamba
 
 # Install Micromamba using the installation script via wget
 echo 'curl 🐌🐌🐌'
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 ls
 
-# Add Micromamba to PATH
-export PATH="$HOME/micromamba/bin:$PATH"
-export MAMBA_ROOT_PREFIX="$HOME/micromamba-root"
-
-# Initialize Micromamba shell
 eval "$(./bin/micromamba shell hook -s posix)"
+
 ./bin/micromamba shell init -s bash -r ~/micromamba
 source ~/.bashrc
 
