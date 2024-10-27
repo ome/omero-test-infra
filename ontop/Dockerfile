@@ -1,5 +1,20 @@
-# Use the Ontop image as the base
+# Use a base image with Micromamba
+FROM mambaorg/micromamba:latest as mamba_base
+
+# Create a new environment and install any required dependencies (example shown with Python)
+RUN micromamba create -y -n ontop python=3.9 omero-py rdflib requests pytest
+
+# Set PATH to include Micromamba environment binaries
+ENV PATH=/opt/conda/envs/ontop/bin:$PATH
+
+# Switch to the Ontop base image and copy Micromamba setup from the base
 FROM ontop/ontop
+
+# Copy the environment from mamba_base to the final image
+COPY --from=mamba_base /opt/conda /opt/conda
+
+# Set PATH to include the copied Micromamba environment
+ENV PATH="/opt/conda/envs/ontop/bin:$PATH"
 
 # Set working directory inside the container
 WORKDIR /opt/ontop
@@ -10,28 +25,14 @@ USER root
 ENV PATH="/root/miniconda/bin:$PATH"
 
 # Copy scripts into the container
-COPY install_omero_py.sh /usr/local/bin/install_omero_py.sh
 # COPY test_infra_ontop /usr/local/bin/ontop-config I think this line is wrong
 COPY test_infra_ontop /opt/ontop/input/
 
 # Makes scripts executable
-RUN chmod +x /usr/local/bin/install_omero_py.sh 
 RUN chmod +x /opt/ontop/input/*
-
-# Run scripts
-RUN /usr/local/bin/install_omero_py.sh
-
-# # Create a non-root user
-# RUN useradd -m omero_user && \
-#     chown -R omero_user:omero_user /opt/ontop
-
-# Switch to non-root user
-# USER omero_user
 
 
 RUN /opt/ontop/input/insert_data.sh
-
-# USER root
 
 # Download the PostgreSQL JDBC driver and place it in the jdbc directory
 RUN wget --no-check-certificate https://jdbc.postgresql.org/download/postgresql-42.7.4.jar -P /opt/ontop/jdbc/

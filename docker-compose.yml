@@ -34,7 +34,9 @@ services:
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_WEB_PORT}:4080"
-
+  micromamba:
+    build:
+      context: ./micromamba
   ontop:
     build:
       context: ./ontop
