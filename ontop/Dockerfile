@@ -12,9 +12,6 @@ COPY infra_ontop /opt/ontop/input/
 # Makes scripts executable
 RUN chmod +x /opt/ontop/input
 
-# Run scripts
-RUN /opt/ontop/input/insert_data.sh
-
 # Download the PostgreSQL JDBC driver and place it in the jdbc directory
 RUN wget --no-check-certificate https://jdbc.postgresql.org/download/postgresql-42.7.4.jar -P /opt/ontop/jdbc/
 
