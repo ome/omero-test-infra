@@ -25,12 +25,11 @@ RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 ENV OMERO_TEMPDIR=/opt/project/tmp
 RUN mkdir -p $OMERO_TEMPDIR && chown -R nobody:nogroup $OMERO_TEMPDIR /opt/project
 
+# I think this script cannot be ran in root
+RUN /opt/project/insert_data.sh
 
 # Switch to non-root user for running scripts
 USER 1000
-
-# I think this script cannot be ran in root
-RUN /opt/project/insert_data.sh
 
 # Run the scripts in the specified order
 RUN python /opt/project/test_endpoint.py
