@@ -25,11 +25,18 @@ RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 ENV OMERO_TEMPDIR=/opt/project/tmp
 RUN mkdir -p $OMERO_TEMPDIR && chown -R nobody:nogroup $OMERO_TEMPDIR /opt/project
 
+
 # Switch to non-root user for running scripts
-USER nobody
+USER 1000
+
+# I think this script cannot be ran in root
+RUN /opt/project/insert_data.sh
 
 # Run the scripts in the specified order
-RUN /opt/project/insert_data.sh && python /opt/project/test_endpoint.py
+RUN python /opt/project/test_endpoint.py
 
 # Print a confirmation message after successful execution
 RUN echo "Tests ran successfully."
+
+
+# I think this nobody user is interacting with everything else
