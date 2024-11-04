@@ -6,10 +6,12 @@ WORKDIR /opt/project
 # Ensure PATH includes micromamba
 ENV PATH="/opt/conda/bin:$PATH"
 
+# Install necessary packages
 RUN micromamba install -y -n base -c conda-forge python=3.9.15 omero-py rdflib requests pytest && micromamba clean -a -y
 
 RUN echo "omero-py, rdflib, pytest, and requests installed successfully"
 
+# Switch to root for file operations
 USER root
 
 # Copy the necessary scripts into the container
@@ -19,6 +21,11 @@ COPY test_infra_ontop/test_endpoint.py /opt/project/test_endpoint.py
 # Set executable permissions
 RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 
+# Create a writable temp directory for OMERO
+ENV OMERO_TEMPDIR=/opt/project/tmp
+RUN mkdir -p $OMERO_TEMPDIR && chown -R nobody:nogroup $OMERO_TEMPDIR /opt/project
+
+# Switch to non-root user for running scripts
 USER nobody
 
 # Run the scripts in the specified order
