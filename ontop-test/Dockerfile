@@ -3,6 +3,8 @@ FROM mambaorg/micromamba:2.0.2
 # Set working directory inside the container
 WORKDIR /opt/project
 
+USER root
+
 # Ensure PATH includes micromamba
 ENV PATH="/opt/conda/bin:$PATH"
 
