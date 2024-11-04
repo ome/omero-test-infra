@@ -21,15 +21,16 @@ COPY test_infra_ontop/test_endpoint.py /opt/project/test_endpoint.py
 # Set executable permissions
 RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 
-# Create a writable temp directory for OMERO
+# Create a writable temp directory for OMERO and set permissions
 ENV OMERO_TEMPDIR=/opt/project/tmp
-RUN mkdir -p $OMERO_TEMPDIR && chown -R nobody:nogroup $OMERO_TEMPDIR /opt/project
+RUN mkdir -p $OMERO_TEMPDIR && chown -R 1000:1000 /opt/project
 
-# I think this script cannot be ran in root
-RUN /opt/project/insert_data.sh
-
-# Switch to non-root user for running scripts
+# Switch to non-root user for running the scripts
 USER 1000
+
+# Run the scripts in the specified order
+RUN /opt/project/insert_data.sh && python /opt/project/test_endpoint.py
+
 
 # Run the scripts in the specified order
 RUN python /opt/project/test_endpoint.py
