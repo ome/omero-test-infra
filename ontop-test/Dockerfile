@@ -19,7 +19,7 @@ COPY test_infra_ontop/test_endpoint.py /opt/project/test_endpoint.py
 # Set executable permissions
 RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 
-RUN chown -R omero:omero /home/omero
+RUN chown -R root:root /home/omero
 
 # Run the scripts in the specified order
 RUN /opt/project/insert_data.sh && python /opt/project/test_endpoint.py
