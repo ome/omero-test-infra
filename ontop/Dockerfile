@@ -1,37 +1,18 @@
-# Use a base image with Micromamba
-FROM mambaorg/micromamba:latest as mamba_base
-
-# Create a new environment and install any required dependencies (example shown with Python)
-RUN micromamba create -y -n ontop python=3.9 omero-py rdflib requests pytest
-
-# Set PATH to include Micromamba environment binaries
-ENV PATH=/opt/conda/envs/ontop/bin:$PATH
-
-# Switch to the Ontop base image and copy Micromamba setup from the base
+# Use the Ontop image as the base
 FROM ontop/ontop
-
-# Copy the environment from mamba_base to the final image
-COPY --from=mamba_base /opt/conda /opt/conda
-
-# Set PATH to include the copied Micromamba environment
-ENV PATH="/opt/conda/envs/ontop/bin:$PATH"
 
 # Set working directory inside the container
 WORKDIR /opt/ontop
 
 USER root
 
-# Sets ENV PATH for miniconda
-ENV PATH="/root/miniconda/bin:$PATH"
-
-# Copy scripts into the container
-# COPY test_infra_ontop /usr/local/bin/ontop-config I think this line is wrong
-COPY test_infra_ontop /opt/ontop/input/
+# Copy files into the container
+COPY infra_ontop /opt/ontop/input/
 
 # Makes scripts executable
-RUN chmod +x /opt/ontop/input/*
+RUN chmod +x /opt/ontop/input
 
-
+# Run scripts
 RUN /opt/ontop/input/insert_data.sh
 
 # Download the PostgreSQL JDBC driver and place it in the jdbc directory

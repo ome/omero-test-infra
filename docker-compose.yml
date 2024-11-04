@@ -34,9 +34,6 @@ services:
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_WEB_PORT}:4080"
-  micromamba:
-    build:
-      context: ./micromamba
   ontop:
     build:
       context: ./ontop
@@ -45,6 +42,9 @@ services:
       - ONTOP_DB_USER=postgres
       - ONTOP_DB_NAME=postgres
       - ONTOP_DB_PASSWORD=${POSTGRES_PASSWORD}
+  ontop-test:
+    build:
+      context: ./ontop-test
     ports:
       - "8080:8080"
     healthcheck:
