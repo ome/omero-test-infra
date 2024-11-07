@@ -1,8 +1,8 @@
 FROM mambaorg/micromamba:2.0.2
 
 RUN echo '🦋🦋🦋🦋🦋🦋🦋🦋🦋'
-RUN id
-RUN whoami
+RUN echo id
+RUN echo whoami
 RUN echo '🦋🦋🦋🦋🦋🦋🦋🦋🦋'
 
 # Set working directory inside the container
