@@ -19,7 +19,12 @@ COPY test_infra_ontop/test_endpoint.py /opt/project/test_endpoint.py
 # Set executable permissions
 RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 
-RUN chown -R root:root /opt/conda/omero
+# RUN chown -R root:root /opt/conda/omero
+# I need to comment ou the above line and see where this is failing so I can
+# add it to the chown correctly
+
+# TODO: try with omero-server user
+USER omero-server
 
 # Run the scripts in the specified order
 RUN /opt/project/insert_data.sh && python /opt/project/test_endpoint.py
