@@ -42,11 +42,11 @@ services:
       - ONTOP_DB_USER=postgres
       - ONTOP_DB_NAME=postgres
       - ONTOP_DB_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "8080:8080"
   ontop-test:
     build:
       context: ./ontop-test
-    ports:
-      - "8080:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
