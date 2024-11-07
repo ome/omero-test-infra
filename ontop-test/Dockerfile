@@ -1,10 +1,5 @@
 FROM mambaorg/micromamba:2.0.2
 
-RUN echo '🦋🦋🦋🦋🦋🦋🦋🦋🦋'
-RUN echo id
-RUN echo whoami
-RUN echo '🦋🦋🦋🦋🦋🦋🦋🦋🦋'
-
 # Set working directory inside the container
 WORKDIR /opt/project
 
@@ -34,6 +29,8 @@ RUN chmod +x /opt/project/insert_data.sh /opt/project/test_endpoint.py
 
 #36 [web 2/2] RUN dnf install -y -q     java-11-openjdk     git &&     dnf clean all
 #36 CANCELED
+
+USER mambauser
 
 # Run the scripts in the specified order
 RUN /opt/project/insert_data.sh && python /opt/project/test_endpoint.py
