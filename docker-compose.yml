@@ -45,13 +45,10 @@ services:
     ports:
       - "8080:8080"
   ontop-test:
-    build:
-      context: ./ontop-test
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
       timeout: 5s
       retries: 3
-    command: >
-      /bin/sh -c "
-      pytest"
+    build:
+      context: ./ontop-test
