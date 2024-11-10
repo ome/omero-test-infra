@@ -33,11 +33,11 @@ services:
     depends_on:
       db:
         condition: service_started
-    healthcheck:
-      test: ["CMD", "pgrep", "-f", "Blitz-0"] # Name of omero server process
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD", "pgrep", "-f", "Blitz-0"] # Name of omero server process
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   web:
     build:
@@ -81,8 +81,8 @@ services:
     build:
       context: ./ontop-test
     depends_on:
-      omero:
-        condition: service_healthy
+      # omero:
+      #   condition: service_healthy
       web:
         condition: service_healthy
       ontop:
