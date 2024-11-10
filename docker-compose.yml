@@ -32,9 +32,9 @@ services:
       - "4064:4064"
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4064"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:4064"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -53,7 +53,7 @@ services:
       omero:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4080"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:4080"]
       interval: 10s
       timeout: 5s
       retries: 5
