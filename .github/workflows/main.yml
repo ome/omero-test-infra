@@ -36,3 +36,9 @@ jobs:
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
+      - name: Check health status and logs on failure
+        if: failure()
+        run: |
+          docker ps -a
+          docker inspect omeroapp-omero-1
+          docker logs omeroapp-omero-1
