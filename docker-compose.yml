@@ -38,7 +38,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      resutl: ["CMD", "echo", "Omero server is running. 🐖🪽"]
 
   web:
     build:

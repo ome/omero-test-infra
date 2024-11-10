@@ -5,4 +5,5 @@ USER root
 RUN dnf install -y -q \
     git && \
     dnf clean all
+RUN echo "Omero server is running. 🐖🪽"
 USER omero-server
