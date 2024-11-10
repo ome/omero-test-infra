@@ -46,7 +46,7 @@ services:
       - "8080:8080"
   ontop-test:
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:8080 && curl -f http://omero:4064"]
       interval: 30s
       timeout: 5s
       retries: 3
