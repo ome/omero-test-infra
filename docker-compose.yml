@@ -7,6 +7,12 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   omero:
     build:
       context: ./omeroserver
@@ -24,6 +30,15 @@ services:
     ports:
       - "4063:4063"
       - "4064:4064"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4064"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     build:
       context: ./omeroweb
@@ -34,6 +49,15 @@ services:
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_WEB_PORT}:4080"
+    depends_on:
+      omero:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ontop:
     build:
       context: ./ontop
@@ -44,11 +68,27 @@ services:
       - ONTOP_DB_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "8080:8080"
-  ontop-test:
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "sh", "-c", "curl -f http://localhost:8080 && curl -f http://omero:4064"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ontop-test:
+    build:
+      context: ./ontop-test
+    depends_on:
+      omero:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+      ontop:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://omero:4064"]
       interval: 30s
       timeout: 5s
       retries: 3
-    build:
-      context: ./ontop-test
