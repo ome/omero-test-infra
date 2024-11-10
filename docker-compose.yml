@@ -30,9 +30,9 @@ services:
     ports:
       - "4063:4063"
       - "4064:4064"
-    depends_on:
-      db:
-        condition: service_started
+    # depends_on:
+    #   db:
+    #     condition: service_started
     # healthcheck:
     #   test: ["CMD", "pgrep", "-f", "Blitz-0"] # Name of omero server process
     #   interval: 10s
