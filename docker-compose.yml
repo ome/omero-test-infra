@@ -82,7 +82,7 @@ services:
       context: ./ontop-test
     depends_on:
       omero:
-        condition: service_healthy
+        condition: service_started
       web:
         condition: service_healthy
       ontop:
