@@ -3,7 +3,7 @@ set -e
 
 echo "Creating mock data and inserting in the OMERO instance"
 
-omero login -C -u root -w omero -s http://localhost:4064
+omero login -C -u root -w omero -s localhost:4064
 
 # Create 3 datasets
 DS1=$(omero obj new Dataset name="Dataset 1")
