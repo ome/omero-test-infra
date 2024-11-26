@@ -7,11 +7,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   omero:
     build:
@@ -41,14 +36,7 @@ services:
       - CONFIG_Ice_IPv6=0
     ports:
       - "${OMERO_WEB_PORT}:4080"
-    # depends_on:
-    #   omero:
-    #     condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:4080"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+
 
   ontop:
     build:
