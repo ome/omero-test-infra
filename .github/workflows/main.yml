@@ -32,7 +32,19 @@ jobs:
         run: |
           cd /tmp/omero-app
           .omero/compose up -d
-          cd /tmp/omero-app
+      - name: Install Micromamba
+        run: |
+          curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin/ --strip-components=1 bin/micromamba
+          micromamba shell init -s bash -p ~/micromamba
+          source ~/.bashrc
+          micromamba create -y -n test_env -c conda-forge python=3.9 omero-py rdflib requests pytest
+          micromamba activate test_env
+          echo "omero-py, rdflib, pytest, and requests installed successfully"
+      - name: Test
+        run: |
+          chmod +x ontop-test/test_infra_ontop/entrypoint.sh  ontop-test/test_infra_ontop/test_endpoint.py  ontop-test/test_infra_ontop/insert_data.sh
+          bash ontop-test/test_infra_ontop/entrypoint.sh
+      - name: Tear down
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup

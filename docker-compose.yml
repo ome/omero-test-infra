@@ -76,14 +76,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  ontop-test:
-    build:
-      context: ./ontop-test
-    depends_on:
-      # omero:
-      #   condition: service_healthy
-      web:
-        condition: service_healthy
-      ontop:
-        condition: service_healthy
