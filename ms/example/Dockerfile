@@ -3,7 +3,6 @@ FROM alpine:latest
 EXPOSE 8080
 WORKDIR /serve
 
-RUN mkdir /serve
 RUN echo "hello world" >> /serve/file.txt
 
 RUN apk --no-cache -U add python3 && \
