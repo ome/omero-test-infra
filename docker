@@ -235,6 +235,28 @@ for STAGE in $STAGES; do
             run --user test data || echo ignore
             run --local lib test
             ;;
+        ms)
+            # Similar command to `srv` which builds the containing
+            # directory (..) assuming that it is a microservice and
+            # therefore *also* starts the main server container.
+            export COMPONENT=server
+            export USER=omero-server
+            export COMPOSE_FILE=${COMPOSE_FILE:-"docker-compose.yml:ms/compose.yml"}
+            export OMERO_DIST="/opt/omero/server/OMERO.server"
+            export TARGET=/src
+            start_up
+            export CID=$(get_cid omero)
+            install --nosrc
+            wait_on_login --localhost
+
+            # Now that the server is running, test it
+            export USER=1000
+            export CID=$(get_cid test)
+            export TARGET="/src"
+            export OMERO_DIST="/src/dist"
+            install --nosrc
+            run --user ms test
+            ;;
         scripts)
             export COMPONENT=server
             export USER=omero-server
