@@ -12,14 +12,17 @@ jobs:
   build:
     strategy:
       matrix:
-        python: [3.9]
+        python-version: [3.9]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v4
+      - name: Setup Conda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: ${{ matrix.python }}
+          activate-environment: true
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: true
+          miniconda-version: "latest"
       - name: Add variable
         run: |
           run: |
