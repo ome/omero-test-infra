@@ -20,14 +20,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
-
-      - name: Test microservice infrastructure
-        run: |
-          cp -r ms/example /tmp/ms-example
-          cp -r . /tmp/ms-example/.omero
-          cd /tmp/ms-example
-          .omero/docker ms
-
       - name: Add variable
         run: |
           run: |
@@ -40,6 +32,16 @@ jobs:
         run: |
           cd /tmp/omero-app
           .omero/compose up -d
+
+      - name: Test microservice infrastructure
+        run: |
+          cp -r ms/example /tmp/ms-example
+          cp -r . /tmp/ms-example/.omero
+          cd /tmp/ms-example
+          .omero/docker ms
+
+      - name: Tear down
+        run: |
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
