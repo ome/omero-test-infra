@@ -36,7 +36,6 @@ jobs:
       - name: Test microservice infrastructure
         run: |
           mkdir /tmp/ms-example
-          cp -r ms/example /tmp/ms-example
           cp -r . /tmp/ms-example/.omero
           cd /tmp/ms-example
           .omero/docker ms
