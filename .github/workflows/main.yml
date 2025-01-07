@@ -28,10 +28,6 @@ jobs:
         run: |
           mkdir /tmp/omero-app
           cp -r . /tmp/omero-app/.omero
-      - name: Build
-        run: |
-          cd /tmp/omero-app
-          .omero/compose up -d
 
       - name: Test microservice infrastructure
         run: |
@@ -39,6 +35,11 @@ jobs:
           cp -r . /tmp/ms-example/.omero
           cd /tmp/ms-example
           .omero/docker ms
+
+      - name: Build
+        run: |
+          cd /tmp/omero-app
+          .omero/compose up -d
 
       - name: Tear down
         run: |
