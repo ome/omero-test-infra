@@ -28,10 +28,25 @@ jobs:
         run: |
           mkdir /tmp/omero-app
           cp -r . /tmp/omero-app/.omero
+
+      - name: Test microservice infrastructure
+        run: |
+          mkdir /tmp/ms-example
+          echo "🌸🌸🌸🌸🌸"
+          ls
+          echo "🌸🌸🌸🌸🌸"
+          cp -r . /tmp/ms-example/.omero
+          cd /tmp/ms-example
+          .omero/docker ms
+          echo "The above ran succesfully ☀️"
+
       - name: Build
         run: |
           cd /tmp/omero-app
           .omero/compose up -d
+
+      - name: Tear down
+        run: |
           .omero/compose down
           .omero/persist.sh backup
           .omero/persist.sh --restore backup
