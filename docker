@@ -217,6 +217,7 @@ for STAGE in $STAGES; do
             start_up
             export CID=$(get_cid omero)
             install
+            run cli deps
             wait_on_login
             run py common
             run py check
