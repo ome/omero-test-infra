@@ -21,6 +21,10 @@ services:
     ports:
       - "${OMERO_SERVER_TCP}4063"
       - "${OMERO_SERVER_SSL}4064"
+    ulimits:
+      nofile:
+        soft: 8192
+        hard: 65536
   web:
     build:
       context: ./omeroweb
