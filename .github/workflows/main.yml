@@ -20,6 +20,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+
+      - name: Test microservice infrastructure
+        run: |
+          cp -r ms/example /tmp/ms-example
+          cp -r . /tmp/ms-example/.omero
+          cd /tmp/ms-example
+          .omero/docker ms
+
       - name: Add variable
         run: |
           run: |

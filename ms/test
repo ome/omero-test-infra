@@ -1,0 +1,2 @@
+#!/bin/bash
+curl http://ms:8080/file.txt
