@@ -101,8 +101,8 @@ can influence the behavior of omero-test-infra. Of particular use are:
 
  * `ROOTPASS` and `POSTGRES_PASSWORD` for securing your installation
  * `*_IMAGE` for choosing other bases Docker images
- * `*_PORT` for mapping local ports to the services, e.g. "OMERO_SERVER_PORT=4064:"
-   would be a common choice if you aren't already using the port 4064
+ * `*_PORT` for mapping local ports to the services, e.g. "OMERO_WEB_PORT=80:"
+   might be a common choice if you aren't already using the port 80
 
 Other environment arguments that omero-test-infra uses:
 
